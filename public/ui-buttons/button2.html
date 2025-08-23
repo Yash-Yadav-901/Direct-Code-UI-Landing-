@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Button</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    overflow: hidden;
+  }
+  
+  .button-container {
+    perspective: 1000px;
+    position: relative;
+  }
+  
+  .math-button {
+    position: relative;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border: none;
+    border-radius: 18px;
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.2),
+      0 6px 0 #bdbdbd,
+      inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+      inset 0 3px 10px rgba(255, 255, 255, 0.8);
+    padding: 28px 50px;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    transform: translateZ(0);
+    transition: 
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      background 0.4s ease;
+    overflow: hidden;
+    z-index: 2;
+    text-align: center;
+    line-height: 1.2;
+  }
+  
+  /* Fraction styling */
+  .fraction {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.8em;
+  }
+  
+  .numerator {
+    display: block;
+    border-bottom: 3px solid #333;
+    padding: 0 10px;
+  }
+  
+  .denominator {
+    display: block;
+    padding: 0 10px;
+  }
+  
+  /* Multiplication sign */
+  .multiply {
+    font-size: 0.9em;
+    margin: 0 15px;
+    vertical-align: middle;
+  }
+  
+  /* Result styling */
+  .result {
+    margin-left: 15px;
+    vertical-align: middle;
+  }
+  
+  /* Hover effect */
+  .math-button:hover {
+    transform: translateY(-6px) translateZ(20px) rotateX(10deg);
+    box-shadow: 
+      0 15px 35px rgba(0, 0, 0, 0.25),
+      0 8px 0 #a0a0a0,
+      inset 0 -4px 12px rgba(0, 0, 0, 0.15),
+      inset 0 4px 12px rgba(255, 255, 255, 0.9);
+    background: linear-gradient(145deg, #ffffff, #f8f8f8);
+  }
+  
+  /* Active effect */
+  .math-button:active {
+    transform: translateY(4px) translateZ(5px);
+    box-shadow: 
+      0 5px 15px rgba(0, 0, 0, 0.15),
+      0 2px 0 #bdbdbd,
+      inset 0 -2px 8px rgba(0, 0, 0, 0.1),
+      inset 0 2px 8px rgba(255, 255, 255, 0.7);
+    transition: all 0.1s ease;
+  }
+  
+  /* 3D base effect */
+  .button-base {
+    position: absolute;
+    width: 90%;
+    height: 15px;
+    background: #9e9e9e;
+    border-radius: 0 0 12px 12px;
+    bottom: -10px;
+    left: 5%;
+    transform: rotateX(-85deg);
+    transform-origin: top;
+    filter: blur(2px);
+    opacity: 0.8;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+  
+  /* Glowing effect */
+  .math-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .math-button:hover::before {
+    opacity: 1;
+  }
+  
+  /* Shadow */
+  .button-shadow {
+    position: absolute;
+    width: 85%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    bottom: -25px;
+    left: 7.5%;
+    filter: blur(8px);
+    z-index: 0;
+    transition: all 0.4s ease;
+  }
+  
+  .button-container:hover .button-shadow {
+    transform: scale(1.1);
+    filter: blur(12px);
+  }
+  
+  /* Floating numbers effect */
+  .floating-numbers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+  }
+  
+  .floating-number {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.15);
+    opacity: 0;
+  }
+  
+  /* Animations */
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.5; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+  
+  .button-container {
+    animation: pulse 3s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+<div class="button-container">
+  <button class="math-button">
+    <span class="fraction">
+      <span class="numerator">1</span>
+      <span class="denominator">2</span>
+    </span>
+    <span class="multiply">×</span>
+    3
+    <span class="result">= 6</span>
+  </button>
+  <div class="button-base"></div>
+  <div class="button-shadow"></div>
+  <div class="floating-numbers"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const button = document.querySelector('.math-button');
+  const floatingNumbers = document.querySelector('.floating-numbers');
+  
+  // Add floating numbers on hover
+  button.addEventListener('mouseenter', function() {
+    createFloatingNumbers();
+  });
+  
+  // Create floating numbers animation
+  function createFloatingNumbers() {
+    const numbers = ['1', '2', '3', '6', '×', '='];
+    
+    for (let i = 0; i < 12; i++) {
+      const num = document.createElement('div');
+      num.classList.add('floating-number');
+      num.textContent = numbers[Math.floor(Math.random() * numbers.length)];
+      
+      // Random position
+      const posX = Math.random() * 100;
+      num.style.left = `${posX}%`;
+      
+      // Random animation delay and duration
+      const delay = Math.random() * 0.5;
+      const duration = 1.5 + Math.random() * 1;
+      num.style.animation = `floatUp ${duration}s ease-out ${delay}s forwards`;
+      
+      // Random size
+      const size = 0.8 + Math.random() * 0.7;
+      num.style.fontSize = `${size}rem`;
+      
+      floatingNumbers.appendChild(num);
+      
+      // Remove element after animation
+      setTimeout(() => {
+        num.remove();
+      }, (duration + delay) * 1000);
+    }
+  }
+  
+  // Create ripple effect on click
+  button.addEventListener('click', function(e) {
+    createRipple(e);
+  });
+  
+  // Create ripple effect
+  function createRipple(e) {
+    const rect = button.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const ripple = document.createElement('div');
+    ripple.style.position = 'absolute';
+    ripple.style.borderRadius = '50%';
+    ripple.style.width = '0';
+    ripple.style.height = '0';
+    ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+    ripple.style.transform = 'translate(-50%, -50%)';
+    ripple.style.top = `${y}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.pointerEvents = 'none';
+    ripple.style.zIndex = '5';
+    
+    button.appendChild(ripple);
+    
+    // Animate ripple
+    setTimeout(() => {
+      ripple.style.width = '300px';
+      ripple.style.height = '300px';
+      ripple.style.opacity = '0';
+      ripple.style.transition = 'all 0.8s ease-out';
+    }, 10);
+    
+    // Remove ripple after animation
+    setTimeout(() => {
+      ripple.remove();
+    }, 1000);
+  }
+  
+  // Initial floating numbers
+  createFloatingNumbers();
+  setInterval(createFloatingNumbers, 2000);
+});
+</script>
+</body>
+</html>

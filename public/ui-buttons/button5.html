@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Download Button</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c); */
+            background-attachment: fixed;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .download-button {
+            position: relative;
+            padding: 1.5rem 3.5rem;
+            border-radius: 1.2rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+            background: linear-gradient(145deg, #75a2e2, #3868a2);
+            box-shadow: 
+                0 0.4rem 0 0 #2d568c,
+                0 -0.2rem 0 0 #c9e3ff,
+                0 1.2rem 2rem rgba(0, 0, 0, 0.3);
+            transition: 
+                transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                box-shadow 0.3s ease-in-out,
+                background 0.5s ease;
+            overflow: hidden;
+            z-index: 1;
+            letter-spacing: 1px;
+            perspective: 1000px;
+        }
+        
+        .download-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .download-button:hover {
+            transform: translateY(-0.5rem) rotateX(15deg);
+            box-shadow: 
+                0 0.4rem 0 0 #2d568c,
+                0 -0.2rem 0 0 #c9e3ff,
+                0 1.8rem 3rem rgba(0, 0, 0, 0.4);
+            background: linear-gradient(145deg, #7fa9e6, #3f70b0);
+        }
+        
+        .download-button:hover::before {
+            left: 100%;
+        }
+        
+        .download-button:active {
+            transform: translateY(0.2rem) scale(0.98);
+            box-shadow: 
+                0 0.15rem 0 0 #2d568c,
+                0 0.6rem 1rem rgba(0, 0, 0, 0.2);
+            transition: all 0.1s ease;
+        }
+        
+        .icon {
+            margin-right: 12px;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        
+        .download-button:hover .icon {
+            transform: translateY(-5px);
+        }
+        
+        .download-button:active .icon {
+            transform: translateY(3px);
+        }
+        
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: rippleEffect 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* Particles effect */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleAnimation 1.5s ease-out forwards;
+            z-index: 100;
+        }
+        
+        @keyframes particleAnimation {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 6px;
+            width: 0%;
+            background: linear-gradient(90deg, #75a2e2, #c9e3ff);
+            border-radius: 0 0 1.2rem 1.2rem;
+            transition: width 0.4s ease;
+            z-index: 2;
+        }
+        
+        /* Confetti effect */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: confetti-fall 2s ease-in-out forwards;
+            z-index: 0;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Holographic effect */
+        .holographic-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                transparent 60%);
+            border-radius: 1.2rem;
+            pointer-events: none;
+            transition: transform 0.1s linear;
+            z-index: 0;
+        }
+        
+        /* Success checkmark */
+        .checkmark {
+            display: inline-block;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .success .checkmark {
+            transform: scale(1);
+        }
+        
+        .success .download-text {
+            transform: translateX(-10px);
+        }
+        
+        .download-text {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Glow effect */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(117, 162, 226, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(117, 162, 226, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(117, 162, 226, 0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <button class="download-button" id="downloadBtn">
+        <div class="holographic-layer" id="holographicLayer"></div>
+        <div class="progress-bar" id="progressBar"></div>
+        <span class="icon" id="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 16V20H20V16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 4V16M12 16L16 12M12 16L8 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+        <span class="download-text">Download</span>
+        <span class="checkmark" id="checkmark">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+    </button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.getElementById('downloadBtn');
+            const holographicLayer = document.getElementById('holographicLayer');
+            const progressBar = document.getElementById('progressBar');
+            const icon = document.getElementById('icon');
+            const checkmark = document.getElementById('checkmark');
+            const downloadText = document.querySelector('.download-text');
+            
+            // Add pulse animation on page load
+            setTimeout(() => {
+                downloadBtn.classList.add('pulse');
+                
+                // Remove pulse after 3 seconds
+                setTimeout(() => {
+                    downloadBtn.classList.remove('pulse');
+                }, 3000);
+            }, 1000);
+            
+            // Parallax effect for holographic layer
+            downloadBtn.addEventListener('mousemove', (e) => {
+                const rect = downloadBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Calculate normalized position (-0.5 to 0.5)
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const moveX = ((x - centerX) / centerX) * 10;
+                const moveY = ((y - centerY) / centerY) * 10;
+                
+                holographicLayer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+            
+            downloadBtn.addEventListener('mouseleave', () => {
+                holographicLayer.style.transform = 'translate(0, 0)';
+            });
+            
+            // Create ripple effect on click
+            downloadBtn.addEventListener('click', function(e) {
+                // Get position of the click relative to the button
+                const rect = downloadBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Create ripple element
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                // Add ripple to button
+                downloadBtn.appendChild(ripple);
+                
+                // Remove ripple after animation completes
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+                
+                // Create floating particles
+                createParticles(e.clientX, e.clientY);
+                
+                // Simulate download process
+                simulateDownload();
+            });
+            
+            // Create floating particles effect
+            function createParticles(x, y) {
+                const particles = 15;
+                const colors = ['#75a2e2', '#c9e3ff', '#ffffff'];
+                
+                for (let i = 0; i < particles; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // Random properties
+                    const size = Math.random() * 8 + 3;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 100 + 50;
+                    
+                    // Set particle styles
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.background = color;
+                    particle.style.borderRadius = '50%';
+                    particle.style.position = 'fixed';
+                    particle.style.left = `${x}px`;
+                    particle.style.top = `${y}px`;
+                    particle.style.boxShadow = `0 0 8px ${color}`;
+                    particle.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
+                    particle.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
+                    
+                    // Add to document
+                    document.body.appendChild(particle);
+                    
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1500);
+                }
+            }
+            
+            // Create confetti effect
+            function createConfetti() {
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = `${Math.random() * 10 + 5}px`;
+                    confetti.style.height = `${Math.random() * 10 + 5}px`;
+                    confetti.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 2000);
+                }
+            }
+            
+            // Simulate download process
+            function simulateDownload() {
+                // Reset button state
+                downloadBtn.classList.remove('success');
+                progressBar.style.width = '0%';
+                downloadText.textContent = 'Download';
+                icon.style.display = 'inline-block';
+                checkmark.style.display = 'none';
+                
+                // Downloading state
+                downloadText.textContent = 'Downloading...';
+                
+                // Show progress
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 5;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Success state
+                        downloadBtn.classList.add('success');
+                        downloadText.textContent = 'Complete!';
+                        icon.style.display = 'none';
+                        checkmark.style.display = 'inline-block';
+                        
+                        // Create confetti explosion
+                        createConfetti();
+                        
+                        // Add pulse animation
+                        downloadBtn.classList.add('pulse');
+                        
+                        // Reset after 3 seconds
+                        setTimeout(() => {
+                            downloadBtn.classList.remove('success');
+                            downloadBtn.classList.remove('pulse');
+                            downloadText.textContent = 'Download';
+                            icon.style.display = 'inline-block';
+                            checkmark.style.display = 'none';
+                            progressBar.style.width = '0%';
+                        }, 3000);
+                    }
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>

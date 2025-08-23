@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Awesome Button</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c); */
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+        }
+        
+        /* Button Container */
+        .button-container {
+            perspective: 800px;
+            position: relative;
+            width: 22rem;
+            height: 8rem;
+        }
+        
+        /* 3D Button Styles */
+        .awesome-button {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff8c00 0%, #ff5500 100%);
+            border: 3px solid #ffcc99;
+            border-radius: 1.2rem;
+            box-shadow: 
+                0 1rem 0 #cc4400,
+                inset 0 0.15rem 0 rgba(255, 255, 255, 0.4),
+                inset 0 -0.15rem 0 rgba(0, 0, 0, 0.2);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+            transition: 
+                transform 0.15s ease, 
+                box-shadow 0.15s ease, 
+                background 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        /* Button Text Styles */
+        .top-text {
+            font-size: 2.5rem;
+            line-height: 1;
+            letter-spacing: 0.1rem;
+            text-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.3rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .bottom-text {
+            font-size: 1.6rem;
+            line-height: 1;
+            letter-spacing: 0.2rem;
+            text-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        /* Glowing Effect */
+        .awesome-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+        
+        /* Hover Effects */
+        .awesome-button:hover {
+            transform: translateZ(1rem) rotateX(5deg);
+            box-shadow: 
+                0 1.2rem 1rem #cc4400,
+                inset 0 0.15rem 0 rgba(255, 255, 255, 0.4),
+                inset 0 -0.15rem 0 rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom, #ff9500 0%, #ff5c00 100%);
+        }
+        
+        .awesome-button:hover .top-text {
+            transform: translateY(-0.15rem);
+        }
+        
+        .awesome-button:hover .bottom-text {
+            transform: translateY(0.15rem);
+        }
+        
+        .awesome-button:hover::before {
+            opacity: 0.3;
+            animation: glowMove 3s infinite linear;
+        }
+        
+        /* Active/Pressed Effects */
+        .awesome-button:active {
+            transform: translateZ(0) translateY(0.8rem);
+            box-shadow: 
+                0 0.3rem 0 #cc4400,
+                inset 0 0.15rem 0 rgba(255, 255, 255, 0.2),
+                inset 0 -0.15rem 0 rgba(0, 0, 0, 0.1);
+            transition: transform 0.05s ease, box-shadow 0.05s ease;
+        }
+        
+        .awesome-button:active .top-text {
+            transform: scale(0.98);
+        }
+        
+        .awesome-button:active .bottom-text {
+            transform: scale(0.98);
+        }
+        
+        /* Button Base (3D effect) */
+        .button-base {
+            position: absolute;
+            width: 95%;
+            height: 1.5rem;
+            background: #993300;
+            border-radius: 0 0 0.8rem 0.8rem;
+            bottom: -1.2rem;
+            left: 2.5%;
+            transform: rotateX(-85deg);
+            transform-origin: top;
+            z-index: 1;
+            filter: blur(0.15rem);
+            transition: all 0.2s ease;
+        }
+        
+        /* Button Shadow */
+        .button-shadow {
+            position: absolute;
+            width: 90%;
+            height: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            bottom: -2.5rem;
+            left: 5%;
+            filter: blur(0.5rem);
+            transition: all 0.3s ease;
+            z-index: 0;
+        }
+        
+        .button-container:hover .button-shadow {
+            transform: scale(1.2);
+            filter: blur(0.8rem);
+        }
+        
+        /* Floating particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 0.3rem;
+            height: 0.3rem;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        /* Confetti effect */
+        .confetti {
+            position: absolute;
+            width: 0.5rem;
+            height: 0.5rem;
+            opacity: 0;
+        }
+        
+        /* Animations */
+        @keyframes glowMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(4rem, 2rem) rotate(90deg); }
+            50% { transform: translate(8rem, 4rem) rotate(180deg); }
+            75% { transform: translate(4rem, 6rem) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        @keyframes particleFloat {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--x-end), var(--y-end)); opacity: 0; }
+        }
+        
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(20rem) rotate(720deg); opacity: 0; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Initial button animation */
+        .button-container {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="awesome-button">
+            <span class="top-text">Awesome</span>
+            <span class="bottom-text">Coming</span>
+        </button>
+        <div class="button-base"></div>
+        <div class="button-shadow"></div>
+        <div class="particles"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.awesome-button');
+            const particlesContainer = document.querySelector('.particles');
+            
+            // Click event for confetti effect
+            button.addEventListener('click', function(e) {
+                createConfetti(e);
+            });
+            
+            // Hover event for particle effect
+            button.addEventListener('mouseenter', function() {
+                createParticles();
+            });
+            
+            // Create floating particles
+            function createParticles() {
+                for (let i = 0; i < 15; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // Random position
+                    const posX = Math.random() * 100;
+                    const posY = Math.random() * 100;
+                    particle.style.left = `${posX}%`;
+                    particle.style.top = `${posY}%`;
+                    
+                    // Random movement
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 5 + Math.random() * 10;
+                    const xEnd = Math.cos(angle) * distance;
+                    const yEnd = Math.sin(angle) * distance;
+                    
+                    particle.style.setProperty('--x-end', `${xEnd}rem`);
+                    particle.style.setProperty('--y-end', `${yEnd}rem`);
+                    
+                    // Random size and color
+                    const size = 0.2 + Math.random() * 0.3;
+                    particle.style.width = `${size}rem`;
+                    particle.style.height = `${size}rem`;
+                    
+                    // Random color with orange theme
+                    const colors = ['#ffcc99', '#ffffff', '#ffddb3', '#ffe6cc'];
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Animation
+                    particle.style.animation = `particleFloat ${0.8 + Math.random() * 0.7}s ease-out forwards`;
+                    
+                    particlesContainer.appendChild(particle);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000);
+                }
+            }
+            
+            // Create confetti effect
+            function createConfetti(e) {
+                const rect = button.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // Position at click location
+                    confetti.style.left = `${centerX}px`;
+                    confetti.style.top = `${centerY}px`;
+                    
+                    // Random color
+                    const colors = ['#ffcc99', '#ffffff', '#ff8c00', '#ff5500', '#cc4400', '#ffddb3'];
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Random shape
+                    const shapes = ['circle', 'square', 'triangle'];
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    
+                    if (shape === 'circle') {
+                        confetti.style.borderRadius = '50%';
+                    } else if (shape === 'triangle') {
+                        confetti.style.width = '0';
+                        confetti.style.height = '0';
+                        confetti.style.borderLeft = '0.5rem solid transparent';
+                        confetti.style.borderRight = '0.5rem solid transparent';
+                        confetti.style.borderBottom = `0.8rem solid ${confetti.style.backgroundColor}`;
+                        confetti.style.background = 'transparent';
+                    }
+                    
+                    // Random rotation
+                    const rotation = Math.random() * 720;
+                    
+                    // Random size
+                    const size = 0.3 + Math.random() * 0.7;
+                    confetti.style.transform = `scale(${size}) rotate(${rotation}deg)`;
+                    
+                    // Animation
+                    const duration = 1 + Math.random() * 1.5;
+                    const delay = Math.random() * 0.5;
+                    confetti.style.animation = `confettiFall ${duration}s ease-in ${delay}s forwards`;
+                    
+                    // Random movement
+                    const xMovement = (Math.random() - 0.5) * 200;
+                    confetti.style.setProperty('--x-movement', `${xMovement}%`);
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, (duration + delay) * 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphic Button</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* background: 
+                radial-gradient(circle at 10% 20%, rgba(106, 17, 203, 0.3), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 255, 0.3), transparent 30%),
+                linear-gradient(135deg, #1a0639, #3d0b5e, #5a1a8c); */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .glass-button {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background: rgba(50, 0, 80, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 0 15px rgba(192, 128, 255, 0.2);
+            transition: all 0.4s ease;
+        }
+        
+        .logo-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .v-shape {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+        }
+        
+        .v-left {
+            position: absolute;
+            left: 0;
+            width: 60px;
+            height: 120px;
+            clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+            background: linear-gradient(to bottom, #00c6ff, #6a11cb);
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .v-right {
+            position: absolute;
+            right: 0;
+            width: 60px;
+            height: 120px;
+            clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
+            background: linear-gradient(to bottom, #6a11cb, #ff00ff);
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .lightning {
+            position: absolute;
+            width: 45px;
+            height: 70px;
+            right: 25px;
+            top: 35px;
+            transform: rotate(-5deg);
+            fill: #FFD700;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.8));
+            transition: all 0.3s ease;
+        }
+        
+        .glass-button:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 
+                0 15px 40px rgba(106, 17, 203, 0.5),
+                inset 0 0 20px rgba(220, 180, 255, 0.3);
+            background: rgba(50, 0, 80, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .glass-button:hover .lightning {
+            transform: rotate(-5deg) scale(1.15);
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 1));
+        }
+        
+        .glass-button:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.2),
+                inset 0 0 10px rgba(192, 128, 255, 0.3);
+            background: rgba(50, 0, 80, 0.2);
+        }
+        
+        @media (max-width: 600px) {
+            .glass-button {
+                width: 180px;
+                height: 180px;
+            }
+            .logo-container {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="glass-button">
+        <div class="logo-container">
+            <div class="v-shape">
+                <div class="v-left"></div>
+                <div class="v-right"></div>
+            </div>
+            <svg class="lightning" viewBox="0 0 24 24">
+                <path d="M11 9H16.5L14 15H18L10 23V14H5.5L8 8H4L11 1V9Z" />
+            </svg>
+        </div>
+    </button>
+</body>
+</html>

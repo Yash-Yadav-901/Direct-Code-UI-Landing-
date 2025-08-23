@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neumorphic Sun Button</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* background: #e0e5ec; */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            transition: background 0.8s ease;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(163,177,198,0.6), 
+                         -2px -2px 4px rgba(255,255,255,0.7);
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 60px;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        
+        .button-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+        
+        .sun-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #e0e5ec;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                8px 8px 16px rgba(163, 177, 198, 0.6),
+                -8px -8px 16px rgba(255, 255, 255, 0.8),
+                inset 1px 1px 2px rgba(255, 255, 255, 0.7),
+                inset -1px -1px 2px rgba(163, 177, 198, 0.5);
+            transition: all 0.4s ease;
+        }
+        
+        /* Sun icon styling */
+        .sun-icon {
+            width: 60px;
+            height: 60px;
+            transition: all 0.5s ease;
+        }
+        
+        .sun-circle {
+            fill: #333;
+            transition: fill 0.3s ease;
+        }
+        
+        .sun-ray {
+            stroke: #333;
+            stroke-width: 3;
+            transition: stroke 0.3s ease;
+        }
+        
+        /* Hover effect */
+        .sun-button:hover {
+            box-shadow: 
+                4px 4px 8px rgba(163, 177, 198, 0.6),
+                -4px -4px 8px rgba(255, 255, 255, 0.8),
+                inset 3px 3px 6px rgba(163, 177, 198, 0.3),
+                inset -3px -3px 6px rgba(255, 255, 255, 0.4);
+            transform: scale(0.98);
+        }
+        
+        .sun-button:hover .sun-icon {
+            transform: scale(1.1);
+        }
+        
+        .sun-button:hover .sun-circle {
+            fill: #FF9800;
+        }
+        
+        .sun-button:hover .sun-ray {
+            stroke: #FF9800;
+        }
+        
+        /* Active effect */
+        .sun-button:active {
+            box-shadow: 
+                inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+            transform: scale(0.95);
+        }
+        
+        /* Light mode effect */
+        .light-mode {
+            background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+        }
+        
+        .light-mode .sun-button {
+            background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+            box-shadow: 
+                8px 8px 16px rgba(190, 190, 190, 0.5),
+                -8px -8px 16px rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Pulsing animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.02);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+        
+        .sun-button.pulse {
+            animation: pulse 2s infinite ease-in-out;
+        }
+        
+        /* Click animation */
+        @keyframes sunRays {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .sun-rays {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .ray {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 152, 0, 0);
+            transform: scale(0.8);
+        }
+        
+        /* Toggle switch */
+        .theme-toggle {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #e0e5ec;
+            transition: .4s;
+            border-radius: 34px;
+            box-shadow: 
+                inset 2px 2px 5px rgba(163, 177, 198, 0.6),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background: #e0e5ec;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 
+                2px 2px 4px rgba(163, 177, 198, 0.6),
+                -2px -2px 4px rgba(255, 255, 255, 0.8);
+        }
+        
+        input:checked + .slider {
+            background: #333;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+            background: #FF9800;
+            box-shadow: 
+                0 0 10px #FF9800,
+                0 0 20px #FF9800;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .sun-button {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .sun-icon {
+                width: 50px;
+                height: 50px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+     
+        <div class="button-container">
+            <button class="sun-button pulse" id="sunButton">
+                <svg class="sun-icon" viewBox="0 0 100 100">
+                    <!-- Sun rays -->
+                    <g class="sun-rays">
+                        <line x1="50" y1="10" x2="50" y2="25" class="sun-ray" />
+                        <line x1="70.7" y1="29.3" x2="60.6" y2="39.4" class="sun-ray" />
+                        <line x1="90" y1="50" x2="75" y2="50" class="sun-ray" />
+                        <line x1="70.7" y1="70.7" x2="60.6" y2="60.6" class="sun-ray" />
+                        <line x1="50" y1="90" x2="50" y2="75" class="sun-ray" />
+                        <line x1="29.3" y1="70.7" x2="39.4" y2="60.6" class="sun-ray" />
+                        <line x1="10" y1="50" x2="25" y2="50" class="sun-ray" />
+                        <line x1="29.3" y1="29.3" x2="39.4" y2="39.4" class="sun-ray" />
+                    </g>
+                    <!-- Sun center -->
+                    <circle cx="50" cy="50" r="15" class="sun-circle" />
+                </svg>
+            </button>
+        </div>
+        
+       
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sunButton = document.getElementById('sunButton');
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // Click effect for sun button
+            sunButton.addEventListener('click', function() {
+                // Add temporary class for click animation
+                this.classList.remove('pulse');
+                this.classList.add('light-mode');
+                
+                // Create sun rays effect
+                createSunRays();
+                
+                // Restore after animation
+                setTimeout(() => {
+                    this.classList.remove('light-mode');
+                    this.classList.add('pulse');
+                }, 2000);
+            });
+            
+            // Theme toggle functionality
+            themeToggle.addEventListener('change', function() {
+                body.classList.toggle('light-mode');
+                
+                if (body.classList.contains('light-mode')) {
+                    document.querySelector('.theme-toggle span:first-child').style.color = "#FF9800";
+                    document.querySelector('.theme-toggle span:last-child').style.color = "#666";
+                } else {
+                    document.querySelector('.theme-toggle span:first-child').style.color = "#666";
+                    document.querySelector('.theme-toggle span:last-child').style.color = "#FF9800";
+                }
+            });
+            
+            // Create sun rays animation
+            function createSunRays() {
+                const buttonContainer = sunButton.parentElement;
+                
+                for (let i = 0; i < 8; i++) {
+                    const ray = document.createElement('div');
+                    ray.classList.add('ray');
+                    ray.style.borderColor = `rgba(255, 152, 0, ${0.2 + i*0.1})`;
+                    ray.style.animation = `sunRays ${0.5 + i*0.1}s ease-out forwards`;
+                    buttonContainer.appendChild(ray);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        ray.remove();
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

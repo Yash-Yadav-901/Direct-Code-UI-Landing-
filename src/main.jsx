@@ -1,0 +1,22 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import {createBrowserRouter, RouterProvider, createRoutesFromElements,Route} from 'react-router-dom'
+import MainLayout from './layout/Mainlayout.jsx'
+import Bg from './components/mainElements/Bg.jsx'
+import IframeCarousel from './components/mainElements/IframeCarousel.jsx'
+
+const router= createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<MainLayout/>}>
+      <Route path="" element={<Bg/>}/>
+      
+    </Route>
+  )
+)
+createRoot(document.getElementById('root')).render(
+
+    <RouterProvider router={router}/>
+ 
+)
