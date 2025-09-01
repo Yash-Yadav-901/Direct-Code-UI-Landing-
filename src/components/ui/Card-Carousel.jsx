@@ -61,7 +61,7 @@ export const CardCarousel = ({
         <section style={{ padding: "2rem 0" }}>
             <style>{css}</style>
             <div style={{ maxWidth: "1024px", margin: "0 auto", position: "relative" }}>
-               
+
                 {/* <div style={{ paddingTop: "80px", paddingBottom: "20px", textAlign: "center" }}>
                     <h3 style={{ fontSize: "2rem", fontWeight: "bold", opacity: 0.85 }}>
                         Card Carousel
@@ -115,7 +115,7 @@ export const CardCarousel = ({
                             <div style={{ width: "300px", height: "300px", borderRadius: "12px", overflow: "hidden" }}>
                                 <iframe
                                     src={image.src}
-                                   
+
                                     width="100%"
                                     height="110%"
                                     style={{ border: "none" }}
