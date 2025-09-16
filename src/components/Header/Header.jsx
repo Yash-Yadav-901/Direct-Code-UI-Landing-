@@ -18,9 +18,9 @@ function Header() {
 
   return (
     <header className="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-7xl bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 transition-all duration-300">
-      <nav className="flex items-center justify-between px-1 py-3">
+      <nav className="flex items-center justify-between px-1 ">
         {/* Logo */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 ">
           <Link to="/">
            <Logo/>
           </Link>
@@ -70,7 +70,7 @@ function Header() {
 
           {/* Menu Links */}
           <div
-            className={`absolute top-20 right-4 bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-1 lg:static lg:flex lg:items-center lg:space-x-6 transition-all duration-300 ${
+            className={`absolute top-20 right-4 p-1 lg:static lg:flex lg:items-center lg:space-x-6 transition-all duration-300 ${
               isMenuOpen ? 'block' : 'hidden'
             } lg:block`}
           >

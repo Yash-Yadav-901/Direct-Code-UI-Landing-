@@ -1,6 +1,8 @@
 import React from 'react';
 import RippleGrid from '../ui/RippleGrid';
 import CardSweeper from './CardSweper';
+import { FaDownload } from "react-icons/fa6";
+import { IoIosArrowDropright } from "react-icons/io";
 
 function Bg() {
   return (
@@ -18,13 +20,17 @@ function Bg() {
       />
 
       {/* Overlay content */}
-      <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center text-white px-4 text-center">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-          Welcome to My UI Showcase
+      <div className="absolute top-20 left-0 w-full h-full z-10 flex flex-col items-center justify-center text-white px-4 text-center">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
+          Build Manage Collaborate 
         </h1>
         <p className="text-base sm:text-lg md:text-xl max-w-xl mb-6">
-          Explore beautifully animated buttons, carousels, and interactive components layered over a dynamic ripple grid.
+         Design faster. Build smarter. Capture UI from any site and remix it into your own library.
         </p>
+        <div className='flex gap-10'>
+          <button className=' bg-blue-600 effectButton gap-2 text-shadow-'>Get Started <IoIosArrowDropright size={"24px"}/></button>
+          <button className='  bg-blue-600 effectButton gap-2'>Extension <FaDownload size={"24px"}/></button>
+        </div>
         <CardSweeper />
       </div>
     </div>
