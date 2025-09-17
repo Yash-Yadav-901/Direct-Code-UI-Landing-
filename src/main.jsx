@@ -6,12 +6,12 @@ import {createBrowserRouter, RouterProvider, createRoutesFromElements,Route} fro
 import MainLayout from './layout/Mainlayout.jsx'
 import Bg from './components/mainElements/Bg.jsx'
 import IframeCarousel from './components/mainElements/IframeCarousel.jsx'
+import AssambleHome from './components/assambleHome/AssambleHome.jsx'
 
 const router= createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout/>}>
-      <Route path="" element={<Bg/>}/>
-      
+      <Route path="" element={<AssambleHome/>}/>
     </Route>
   )
 )

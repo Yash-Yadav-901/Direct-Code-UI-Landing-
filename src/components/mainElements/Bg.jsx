@@ -6,7 +6,7 @@ import { IoIosArrowDropright } from "react-icons/io";
 
 function Bg() {
   return (
-    <div className="absolute top-0 w-full h-[800px] overflow-hidden bg-black">
+    <div className="  w-full h-[800px] overflow-hidden bg-black">
       {/* Background animation */}
       <RippleGrid
         enableRainbow={false}
@@ -21,7 +21,7 @@ function Bg() {
 
       {/* Overlay content */}
       <div className="absolute top-20 left-0 w-full h-full z-10 flex flex-col items-center justify-center text-white px-4 text-center">
-        <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
           Build Manage Collaborate 
         </h1>
         <p className="text-base sm:text-lg md:text-xl max-w-xl mb-6">
