@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Logo from '../Logo';
 import { FaAlignRight } from "react-icons/fa6";
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const headerRef = useRef(null);
+  const scrollTriggerRef = useRef(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -14,16 +20,77 @@ function Header() {
   useEffect(() => {
     return () => {
       document.body.style.overflow = 'auto';
+      // Clean up ScrollTrigger
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    // Set initial state
+    gsap.set(header, {
+      top: '1.25rem', // top-5 equivalent
+      left: '50%',
+      x: '-50%',
+      width: '100%',
+      maxWidth: '80rem', // max-w-7xl equivalent
+      borderRadius: '0.75rem', // rounded-xl equivalent
+    });
+
+    // Create the scroll-triggered animation
+    scrollTriggerRef.current = ScrollTrigger.create({
+      trigger: document.body,
+      start: 'top+=100 top', // Start transforming after 100px of scroll
+      end: 'max',
+      toggleClass: {
+        targets: header,
+        className: 'header-scrolled'
+      },
+      onEnter: () => {
+        gsap.to(header, {
+          top: 0,
+          left: 0,
+          x: 0,
+          maxWidth: '100%',
+          borderRadius: 0,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      },
+      onLeaveBack: () => {
+        gsap.to(header, {
+          top: '1.25rem',
+          left: '50%',
+          x: '-50%',
+          maxWidth: '80rem',
+          borderRadius: '0.75rem',
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      }
+    });
+
+    return () => {
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
     };
   }, []);
 
   return (
-    <header className="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 transition-all duration-300">
-      <nav className="flex items-center justify-between px-1 ">
+    <header 
+      ref={headerRef}
+      className="fixed z-50 bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 transition-all duration-300 header-outer"
+    >
+      <nav className="flex items-center justify-between px-1">
         {/* Logo */}
-        <div className="flex-shrink-0 ">
+        <div className="flex-shrink-0">
           <Link to="/">
-           <Logo/>
+            <Logo/>
           </Link>
         </div>
 
@@ -75,7 +142,7 @@ function Header() {
               isMenuOpen ? 'block' : 'hidden'
             } lg:block`}
           >
-            <ul className="flex flex-col lg:flex-row lg:space-x-6 font-medium text-white ">
+            <ul className="flex flex-col lg:flex-row lg:space-x-6 font-medium text-white">
               {['/', '/about', '/contact', '/github'].map((path, idx) => {
                 const label = ['Home', 'About', 'Contact', 'GitHub'][idx];
                 return (
