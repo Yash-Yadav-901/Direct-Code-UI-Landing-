@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white px-6 py-8 text-center mt-auto">
       <div className="max-w-7xl mx-auto flex flex-col items-center space-y-4 sm:space-y-2 sm:flex-row sm:justify-between">
         {/* Copyright */}
-        <p className="text-sm">&copy; {new Date().getFullYear()} My App. All rights reserved.</p>
+        <p className="text-sm">&copy; {new Date().getFullYear()} Direct Code UI. All rights reserved.</p>
 
         {/* Links */}
         <div className="flex flex-col sm:flex-row sm:space-x-6 text-sm items-center">

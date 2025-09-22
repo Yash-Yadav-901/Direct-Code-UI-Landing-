@@ -1,38 +1,60 @@
-import React, { useEffect } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {
+  FaChrome,
+  FaHandPointer,
+  FaSave,
+} from 'react-icons/fa';
+import { FaEdit } from "react-icons/fa";
+import { MdOutlinePreview } from 'react-icons/md';
 
 gsap.registerPlugin(ScrollTrigger);
 
-
-
-
-
-
-
 function ExtensionShowCase() {
-
-
   useEffect(() => {
-    gsap.utils.toArray('.card').forEach(card => {
-  gsap.fromTo(card,
-    { scale: 1, opacity: 1 },
-    {
-      scale: 0.8,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: card,
-        start: "top 15%",
-        end: "bottom 15%",
-        markers: true,
-        toggleActions: "play reverse ", 
-      },
-      
-    }
-  );
-});
+    gsap.utils.toArray('.card').forEach((card, i) => {
+      gsap.fromTo(
+        card,
+        { y: 80, opacity: 0 },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.8,
+          delay: i * 0.2,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    });
+  }, []);
 
-  }, [])
+  const steps = [
+    {
+      text: 'Install the extension from the Chrome Web Store',
+      icon: <FaChrome className="text-blue-400 text-xl" />,
+    },
+    {
+      text: 'Visit any website and click the extension icon',
+      icon: <FaHandPointer className="text-blue-400 text-xl" />,
+    },
+    {
+      text: 'Select the UI element you want to save',
+      icon: <MdOutlinePreview className="text-blue-400 text-xl" />,
+    },
+    {
+      text: 'Preview and edit the captured component',
+      icon: <FaEdit className="text-blue-400 text-xl" />,
+    },
+    {
+      text: 'Save it to your DirectCode UI library',
+      icon: <FaSave className="text-blue-400 text-xl" />,
+    },
+  ];
 
   return (
     <section className="bg-gray-950 text-white py-16 px-6 md:px-12">
@@ -45,17 +67,21 @@ function ExtensionShowCase() {
         </p>
 
         {/* How It Works */}
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-6 text-left mb-12 h-full ">
-          {[
-            "Install the extension from the Chrome Web Store",
-            "Visit any website and click the extension icon",
-            "Select the UI element you want to save",
-            "Preview and edit the captured component",
-            "Save it to your DirectCode UI library",
-          ].map((step, i) => (
-            <div key={i} className="card bg-gray-900 p-4 rounded-lg shadow-md  sticky  top-[35vh] h-800px">
-              <span className="text-blue-500 font-bold">Step {i + 1}</span>
-              <p className="mt-2 text-gray-300">{step}</p>
+        <div className="grid grid-cols-1 gap-8 text-left mb-12">
+          {steps.map((step, i) => (
+            <div
+              key={i}
+              className="card bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6 rounded-xl shadow-lg border border-gray-700 hover:border-blue-400/40 transition-all duration-300 flex items-start gap-4"
+            >
+              <div className="mt-1">{step.icon}</div>
+              <div>
+                <span className="text-blue-400 font-semibold text-sm uppercase tracking-wide">
+                  Step {i + 1}
+                </span>
+                <p className="mt-2 text-gray-300 text-base leading-relaxed">
+                  {step.text}
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -63,7 +89,7 @@ function ExtensionShowCase() {
         {/* Demo Video */}
         <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden shadow-lg">
           <video
-            src="/videos/extension-demo.mp4" // Replace with your actual video path
+            src="./Modern_UI_Library_Website_Design.mp4"
             autoPlay
             loop
             muted
@@ -76,8 +102,7 @@ function ExtensionShowCase() {
         </div>
       </div>
     </section>
-
-  )
+  );
 }
 
-export default ExtensionShowCase
+export default ExtensionShowCase;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Logo from '../Logo';
+import { FaAlignRight } from "react-icons/fa6";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +18,7 @@ function Header() {
   }, []);
 
   return (
-    <header className="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-7xl bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 transition-all duration-300">
+    <header className="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-full max-w-7xl bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 transition-all duration-300">
       <nav className="flex items-center justify-between px-1 ">
         {/* Logo */}
         <div className="flex-shrink-0 ">
@@ -74,7 +75,7 @@ function Header() {
               isMenuOpen ? 'block' : 'hidden'
             } lg:block`}
           >
-            <ul className="flex flex-col lg:flex-row lg:space-x-6 font-medium text-white">
+            <ul className="flex flex-col lg:flex-row lg:space-x-6 font-medium text-white ">
               {['/', '/about', '/contact', '/github'].map((path, idx) => {
                 const label = ['Home', 'About', 'Contact', 'GitHub'][idx];
                 return (

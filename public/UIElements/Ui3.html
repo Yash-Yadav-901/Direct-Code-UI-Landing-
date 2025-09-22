@@ -1,0 +1,337 @@
+
+   <html>
+        <head><style>:root {
+  --background-color: #EDF3FA;
+  --track-bg: #DEE7F3;
+  --primary-color: #6C2AEB;
+  --shadow-dark: #C9D7E5;
+  --shadow-light: #FFFFFF;
+
+  /* Enhanced colors for active states */
+  --primary-color-light: #8A4EFD; /* Lighter purple */
+  --primary-color-dark: #5A1FD9;  /* Darker purple */
+  --thumb-hover-bg: #F8FBFE; /* Slightly brighter background for thumb hover */
+  --active-glow-color: rgba(108, 42, 235, 0.4); /* Softer glow for hover/focus */
+}
+
+body {
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow: hidden; /* Prevent ripple overflow from showing scrollbars */
+  perspective: 1000px; /* For 3D transforms */
+}
+
+.neumorphic-card {
+  background-color: var(--background-color);
+  border-radius: 2rem;
+  padding: 2.5rem 3rem; /* Consistent padding */
+  box-shadow: 0.8rem 0.8rem 1.6rem var(--shadow-dark),
+              -0.8rem -0.8rem 1.6rem var(--shadow-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth and modern transition */
+  position: relative;
+  overflow: hidden; /* For ripple effect, if applied to card */
+  will-change: transform, box-shadow;
+}
+
+.neumorphic-card:hover {
+  transform: translateY(-0.2rem) scale(1.01); /* Subtle lift and slight scale */
+  box-shadow: 1.2rem 1.2rem 2.4rem var(--shadow-dark),
+              -1.2rem -1.2rem 2.4rem var(--shadow-light),
+              0 0 2rem rgba(108, 42, 235, 0.1); /* Very subtle ambient glow */
+}
+
+.slider-group {
+  display: flex;
+  gap: 3.5rem; /* Consistent spacing between sliders */
+}
+
+.vertical-slider {
+  width: 2.5rem; /* Width of the track area */
+  height: 18rem; /* Total height of the slider component */
+  position: relative; /* Positioning context for thumb and ripple */
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  outline: none; /* Remove default focus outline */
+  cursor: pointer; /* Indicate it's interactive */
+}
+
+.slider-track {
+  width: 0.8rem; /* Narrow vertical track */
+  height: 100%;
+  background-color: var(--track-bg);
+  border-radius: 0.4rem;
+  box-shadow: inset 0.2rem 0.2rem 0.5rem var(--shadow-dark),
+              inset -0.2rem -0.2rem 0.5rem var(--shadow-light);
+  position: relative;
+  overflow: hidden; /* Ensure fill stays within track */
+  transition: box-shadow 0.3s ease-out; /* Smooth shadow transition */
+}
+
+.slider-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, var(--primary-color-dark), var(--primary-color), var(--primary-color-light));
+  border-radius: 0.4rem;
+  transition: height 0.1s linear, background 0.3s ease-in-out; /* Smooth fill update & color blend */
+  transform-origin: bottom;
+}
+
+.slider-thumb {
+  position: absolute; /* Relative to .vertical-slider */
+  left: 50%; /* Center horizontally over the track */
+  transform: translateX(-50%) scale(1) translateZ(0); /* Base state, for 3D */
+  width: 2.4rem;
+  height: 2.4rem;
+  background-color: var(--background-color);
+  border-radius: 50%;
+  box-shadow: 0.3rem 0.3rem 0.6rem var(--shadow-dark),
+              -0.3rem -0.3rem 0.6rem var(--shadow-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+              box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+              background-color 0.25s ease-out;
+  outline: none; /* Remove outline for custom focus */
+  z-index: 10; /* Ensure thumb is above ripple and fill */
+  will-change: transform, box-shadow, background-color;
+}
+
+.slider-thumb:hover {
+  transform: translateX(-50%) scale(1.1) translateZ(0); /* Scale up on hover */
+  background-color: var(--thumb-hover-bg); /* Slightly brighter */
+  box-shadow: 0.4rem 0.4rem 0.8rem var(--shadow-dark),
+              -0.4rem -0.4rem 0.8rem var(--shadow-light),
+              0 0 1.5rem var(--active-glow-color); /* Subtle glowing effect */
+  cursor: grab;
+}
+
+.slider-thumb.dragging {
+  transform: translateX(-50%) scale(1.15) translateZ(5px); /* 3D press effect + larger scale */
+  background-color: var(--primary-color); /* Thumb color changes when dragging */
+  box-shadow: 0.2rem 0.2rem 0.4rem var(--primary-color-dark), /* Darker shadow from active color */
+              -0.2rem -0.2rem 0.4rem var(--primary-color-light), /* Lighter shadow from active color */
+              0 0 2rem 0.5rem var(--primary-color-light); /* Stronger glow */
+  cursor: grabbing;
+  z-index: 11; /* Ensure active thumb is on top */
+  animation: pulse-glow 1.5s infinite alternate ease-in-out; /* Pulsating glow */
+}
+
+.thumb-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  box-shadow: inset 0.1rem 0.1rem 0.2rem var(--primary-color-dark),
+              inset -0.1rem -0.1rem 0.2rem var(--primary-color-light); /* Inset neumorphic dot */
+  transition: background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out; /* Smooth transitions */
+}
+
+.slider-thumb.dragging .thumb-dot {
+  background-color: var(--background-color); /* Dot color changes when dragging */
+  box-shadow: none; /* No inset shadow when dragging, blends with thumb */
+}
+
+/* Ripple effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4); /* White ripple */
+  transform: scale(0);
+  animation: ripple-animation 0.6s ease-out forwards; /* Expand and fade */
+  pointer-events: none; /* Allow clicks to pass through */
+  z-index: 100; /* Ensure ripple is on top */
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(2.5); /* Expands larger */
+    opacity: 0;
+  }
+}
+
+/* Keyframe for subtle pulsating glow on active thumb */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 1rem var(--primary-color); }
+  50% { box-shadow: 0 0 2.5rem var(--primary-color-light), 0 0 1rem var(--primary-color-dark); }
+  100% { box-shadow: 0 0 1rem var(--primary-color); }
+}
+
+/* Focus styles for accessibility */
+.vertical-slider:focus-within .slider-thumb {
+  box-shadow: 0 0 0 0.3rem var(--primary-color), /* Custom vibrant focus ring */
+              0.3rem 0.3rem 0.6rem var(--shadow-dark),
+              -0.3rem -0.3rem 0.6rem var(--shadow-light); /* Keep neumorphic shadows */
+  transform: translateX(-50%) scale(1.05); /* Slightly scaled on focus */
+}
+
+/* Media Query for Responsiveness */
+@media (max-width: 768px) {
+  .neumorphic-card {
+    padding: 2rem 1.5rem;
+    width: 90%; /* Adjust width to be responsive */
+    max-width: 30rem; /* Max width for larger screens */
+  }
+  .slider-group {
+    flex-direction: column; /* Stack sliders vertically */
+    gap: 2.5rem; /* Adjust gap */
+  }
+  .vertical-slider {
+    height: 15rem; /* Make them a bit shorter */
+    width: 3rem; /* Slightly wider area for easier tap */
+  }
+  .slider-thumb {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+}
+</style></head>
+        <body><div class="neumorphic-card">
+  <div class="slider-group">
+    <div class="vertical-slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20" aria-orientation="vertical" tabindex="0" data-initial-value="20">
+      <div class="slider-track">
+        <div class="slider-fill"></div>
+      </div>
+      <div class="slider-thumb">
+        <div class="thumb-dot"></div>
+      </div>
+    </div>
+    <div class="vertical-slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" aria-orientation="vertical" tabindex="0" data-initial-value="80">
+      <div class="slider-track">
+        <div class="slider-fill"></div>
+      </div>
+      <div class="slider-thumb">
+        <div class="thumb-dot"></div>
+      </div>
+    </div>
+  </div>
+</div><script>document.addEventListener('DOMContentLoaded', () => {
+  const sliders = document.querySelectorAll('.vertical-slider');
+
+  sliders.forEach(slider => {
+    const thumb = slider.querySelector('.slider-thumb');
+    const fill = slider.querySelector('.slider-fill');
+    const track = slider.querySelector('.slider-track');
+
+    let isDragging = false;
+    let value = parseFloat(slider.dataset.initialValue) || 0; // Use data attribute for initial value
+
+    // Function to update slider UI based on value
+    const updateSliderUI = (newValue) => {
+      newValue = Math.max(0, Math.min(100, newValue));
+      value = newValue;
+      const trackHeight = track.clientHeight; // Height of the track element
+      const thumbHeight = thumb.clientHeight; // Height of the thumb element
+
+      // Calculate fill height based on percentage
+      const fillHeight = (value / 100) * trackHeight;
+
+      // Calculate thumb position, centering it on the fill's top
+      // thumb's bottom edge should align with (fillHeight - thumbHeight/2) from track bottom
+      const thumbBottomPosition = fillHeight - (thumbHeight / 2);
+
+      fill.style.height = `${fillHeight}px`;
+      thumb.style.bottom = `${thumbBottomPosition}px`; // Position thumb relative to slider parent
+      slider.setAttribute('aria-valuenow', Math.round(value));
+    };
+
+    // Initialize slider position
+    updateSliderUI(value);
+
+    // Mouse events for dragging
+    thumb.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      thumb.classList.add('dragging');
+      // Prevent text selection during drag
+      e.preventDefault();
+      // Start ripple effect
+      createRipple(e);
+    });
+
+    // Event listeners on document to handle mouseup and mousemove anywhere
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const trackRect = track.getBoundingClientRect();
+      const clientY = e.clientY;
+
+      // Calculate the position relative to the track bottom (0% at bottom, 100% at top)
+      const newPos = trackRect.bottom - clientY; // Distance from track bottom
+      const percentage = (newPos / trackRect.height) * 100;
+
+      updateSliderUI(percentage);
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        thumb.classList.remove('dragging');
+      }
+    });
+
+    // Keyboard navigation for accessibility
+    slider.addEventListener('keydown', (e) => {
+      let step = e.shiftKey ? 10 : 1; // Larger step with Shift key
+      if (e.key === 'ArrowUp') {
+        updateSliderUI(value + step);
+        e.preventDefault(); // Prevent default scroll behavior
+      } else if (e.key === 'ArrowDown') {
+        updateSliderUI(value - step);
+        e.preventDefault(); // Prevent default scroll behavior
+      }
+    });
+
+    // Click on track to jump to a value
+    track.addEventListener('click', (e) => {
+      // Only jump if not dragging the thumb (to avoid double actions)
+      if (!isDragging) {
+        const trackRect = track.getBoundingClientRect();
+        const clickY = e.clientY;
+
+        const newPos = trackRect.bottom - clickY;
+        const percentage = (newPos / trackRect.height) * 100;
+
+        updateSliderUI(percentage);
+      }
+    });
+
+    // Ripple effect function
+    const createRipple = (e) => {
+      const ripple = document.createElement('div');
+      ripple.classList.add('ripple');
+      slider.appendChild(ripple); // Append to the vertical-slider container
+
+      const sliderRect = slider.getBoundingClientRect();
+      const thumbRect = thumb.getBoundingClientRect();
+
+      // Calculate click position relative to the slider container
+      const x = e.clientX - sliderRect.left;
+      const y = e.clientY - sliderRect.top;
+
+      // Ripple should be centered at click, and expand. 
+      // Make it slightly larger than the thumb for a nice visual effect.
+      const size = Math.max(thumbRect.width, thumbRect.height) * 1.5; // 1.5x thumb size
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${x - size / 2}px`;
+      ripple.style.top = `${y - size / 2}px`;
+
+      ripple.addEventListener('animationend', () => {
+        ripple.remove();
+      });
+    };
+  });
+});</script></body>
+      </html>
+    

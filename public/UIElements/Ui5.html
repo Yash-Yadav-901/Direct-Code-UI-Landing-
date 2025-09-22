@@ -1,0 +1,294 @@
+
+   <html>
+        <head><style>:root {
+  --track-width: 30rem;
+  --track-height: 1rem;
+  --track-border-radius: 0.5rem;
+  --knob-size: 2.2rem; /* slightly larger than track height */
+  --slider-spacing: 3rem;
+  --top-fill-gradient: linear-gradient(to right, #FF0033, #CC00CC);
+  --bottom-fill-color: #007AFF;
+  --bg-color: #333333;
+  --unfilled-track-color: #1A1A1A;
+  --knob-shadow-color: rgba(0, 0, 0, 0.4);
+  --knob-hover-glow: rgba(255, 255, 255, 0.3);
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 2px 2px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  perspective: 1000px; /* For 3D transforms */
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--slider-spacing);
+  align-items: center;
+}
+
+.slider {
+  position: relative;
+  width: var(--track-width);
+  height: var(--knob-size);
+  display: flex;
+  align-items: center;
+  outline: none; /* Managed by focus state */
+  transform-style: preserve-3d;
+}
+
+.slider-track {
+  position: absolute;
+  width: 100%;
+  height: var(--track-height);
+  background-color: var(--unfilled-track-color);
+  border-radius: var(--track-border-radius);
+  box-shadow:
+    inset 0 0.1rem 0.1rem rgba(255, 255, 255, 0.1), /* Top highlight */
+    inset 0 -0.1rem 0.1rem rgba(0, 0, 0, 0.4); /* Bottom shadow */
+}
+
+.slider-fill {
+  position: absolute;
+  height: var(--track-height);
+  border-radius: var(--track-border-radius);
+  left: 0;
+  transition: width 0.1s ease-out; /* Smooth fill update */
+}
+
+.top-fill {
+  background: var(--top-fill-gradient);
+  background-size: 200% 100%; /* For gradient animation */
+  animation: gradientShift 4s linear infinite alternate;
+}
+
+.bottom-fill {
+  background-color: var(--bottom-fill-color);
+}
+
+.slider-knob {
+  position: absolute;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  border-radius: 50%;
+  cursor: grab;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(0);
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out;
+
+  /* Brushed metallic effect */
+  background: 
+    radial-gradient(circle at 50% 15%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(circle at 50% 85%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 60%),
+    linear-gradient(to bottom, #E0E0E0 0%, #B0B0B0 30%, #808080 70%, #606060 100%);
+
+  box-shadow:
+    inset 0 0.05rem 0.05rem rgba(255, 255, 255, 0.6), /* Inner highlight */
+    inset 0 -0.05rem 0.05rem rgba(0, 0, 0, 0.4), /* Inner shadow */
+    inset 0 0 0.3rem rgba(0, 0, 0, 0.2), /* Inner bevel */
+    0 0.25rem 0.5rem var(--knob-shadow-color); /* Outer drop shadow */
+}
+
+.slider-knob:hover {
+  cursor: grab;
+  transform: scale(1.05) translateZ(0.5rem) rotateX(2deg) rotateY(2deg);
+  box-shadow:
+    inset 0 0.05rem 0.05rem rgba(255, 255, 255, 0.8),
+    inset 0 -0.05rem 0.05rem rgba(0, 0, 0, 0.5),
+    inset 0 0 0.3rem rgba(0, 0, 0, 0.3),
+    0 0.4rem 0.8rem var(--knob-shadow-color),
+    0 0 1rem 0.2rem var(--knob-hover-glow); /* Soft white glow */
+}
+
+.slider-knob.dragging {
+  cursor: grabbing;
+  transform: scale(0.95) translateZ(-0.5rem);
+  box-shadow:
+    inset 0 0.05rem 0.05rem rgba(255, 255, 255, 0.4),
+    inset 0 -0.05rem 0.05rem rgba(0, 0, 0, 0.6),
+    inset 0 0 0.5rem rgba(0, 0, 0, 0.4),
+    0 0.1rem 0.3rem rgba(0, 0, 0, 0.6),
+    0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1); /* Subtle dark glow to reinforce press */
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.slider-knob.ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 1;
+  animation: ripple-effect 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-effect {
+  to {
+    width: 4rem;
+    height: 4rem;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.slider:focus-within .slider-knob {
+  outline: 0.15rem solid var(--bottom-fill-color);
+  outline-offset: 0.2rem;
+}
+
+/* Gradient Shift Animation for Top Slider */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 600px) {
+  :root {
+    --track-width: 20rem;
+    --slider-spacing: 2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --track-width: 15rem;
+    --knob-size: 1.8rem;
+    --track-height: 0.8rem;
+  }
+}
+</style></head>
+        <body><div class="slider-container">
+  <div class="slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" tabindex="0">
+    <div class="slider-track"></div>
+    <div class="slider-fill top-fill"></div>
+    <div class="slider-knob top-knob"></div>
+  </div>
+
+  <div class="slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" tabindex="0">
+    <div class="slider-track"></div>
+    <div class="slider-fill bottom-fill"></div>
+    <div class="slider-knob bottom-knob"></div>
+  </div>
+</div><script>document.addEventListener('DOMContentLoaded', () => {
+  const sliders = document.querySelectorAll('.slider');
+
+  sliders.forEach(sliderElement => {
+    const knob = sliderElement.querySelector('.slider-knob');
+    const fill = sliderElement.querySelector('.slider-fill');
+    const track = sliderElement.querySelector('.slider-track');
+
+    let isDragging = false;
+
+    const updateSlider = (percentage) => {
+      const value = Math.round(percentage * 100);
+      fill.style.width = `${percentage * 100}%`;
+      
+      // Calculate knob position based on actual track and knob dimensions
+      const trackWidth = track.offsetWidth;
+      const knobWidth = knob.offsetWidth;
+      const knobLeftPx = percentage * (trackWidth - knobWidth);
+      knob.style.left = `${knobLeftPx}px`;
+      
+      sliderElement.setAttribute('aria-valuenow', value);
+    };
+
+    // Set initial positions
+    const initialValue = parseInt(sliderElement.getAttribute('aria-valuenow'));
+    updateSlider(initialValue / 100);
+
+    const startDrag = (event) => {
+      isDragging = true;
+      knob.classList.add('dragging');
+      knob.classList.remove('ripple'); // Ensure no lingering ripple class
+      void knob.offsetWidth; // Trigger reflow to restart animation
+      knob.classList.add('ripple'); // Add ripple for click visual
+
+      // Remove ripple after animation ends
+      const handleRippleAnimationEnd = () => {
+        knob.classList.remove('ripple');
+        knob.removeEventListener('animationend', handleRippleAnimationEnd);
+      };
+      knob.addEventListener('animationend', handleRippleAnimationEnd);
+
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', endDrag);
+      document.addEventListener('touchmove', onDrag, { passive: false });
+      document.addEventListener('touchend', endDrag);
+
+      event.preventDefault(); // Prevent text selection etc.
+    };
+
+    const onDrag = (event) => {
+      if (!isDragging) return;
+
+      let clientX = event.clientX || (event.touches ? event.touches[0].clientX : 0);
+      const trackRect = track.getBoundingClientRect();
+      const knobWidth = knob.offsetWidth;
+
+      let newLeftPx = clientX - trackRect.left - knobWidth / 2;
+      newLeftPx = Math.max(0, Math.min(newLeftPx, trackRect.width - knobWidth));
+
+      const percentage = newLeftPx / (trackRect.width - knobWidth);
+      updateSlider(percentage);
+
+      event.preventDefault();
+    };
+
+    const endDrag = () => {
+      isDragging = false;
+      knob.classList.remove('dragging');
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('mouseup', endDrag);
+      document.removeEventListener('touchmove', onDrag);
+      document.removeEventListener('touchend', endDrag);
+    };
+
+    knob.addEventListener('mousedown', startDrag);
+    knob.addEventListener('touchstart', startDrag, { passive: false });
+
+    // Keyboard accessibility
+    sliderElement.addEventListener('keydown', (event) => {
+      let currentValue = parseInt(sliderElement.getAttribute('aria-valuenow'));
+      const step = 1;
+      let newValue = currentValue;
+
+      if (event.key === 'ArrowLeft') {
+        newValue = Math.max(0, currentValue - step);
+        event.preventDefault();
+      } else if (event.key === 'ArrowRight') {
+        newValue = Math.min(100, currentValue + step);
+        event.preventDefault();
+      }
+
+      if (newValue !== currentValue) {
+        updateSlider(newValue / 100);
+      }
+    });
+  });
+});</script></body>
+      </html>
+    

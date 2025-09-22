@@ -1,0 +1,249 @@
+
+   <html>
+        <head><style>:root {
+  --primary-bg: #42238C;
+  --secondary-bg: #F5F5F5;
+  --active-btn-bg: #6B47B0;
+  --active-btn-bg-hover: #7B57C0; /* Slightly lighter for hover */
+  --text-active: #FFFFFF;
+  --icon-active: #FFFFFF;
+  --icon-inactive: #8C73C9;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --active-glow-color: rgba(107, 71, 176, 0.4);
+  --inactive-hover-glow-color: rgba(140, 115, 201, 0.3);
+  --ripple-color: rgba(255, 255, 255, 0.7);
+}
+
+html {
+  font-size: 16px; /* Base for rem units */
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Sans-serif', sans-serif; /* Per description, with generic fallback */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--secondary-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.navigation-bar {
+  background-color: var(--primary-bg);
+  border-radius: 1.25rem; /* 20px */
+  padding: 1rem 2rem; /* medium vertical (16px), large horizontal (32px) */
+  box-shadow: 0 0.625rem 1.25rem var(--shadow-color);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: fit-content;
+  max-width: 90vw;
+  margin: 2rem auto; /* Center on page */
+  position: relative;
+  overflow: hidden; /* For ripple effect */
+  perspective: 1000px; /* For subtle 3D perspective */
+  transform-style: preserve-3d; /* For child 3D transforms */
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* 8px spacing_icon_text */
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0.75rem 1.25rem; /* 12px vertical, 20px horizontal (active button base) */
+  border-radius: 0.875rem; /* 14px */
+  color: var(--icon-inactive); /* Inactive icon color */
+  font-family: 'Sans-serif', sans-serif;
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  line-height: normal;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  will-change: transform, background-color, box-shadow, color;
+  z-index: 1;
+  transform: translateZ(0); /* Establish 3D context for transform animations */
+}
+
+/* Active Navigation Item */
+.nav-item.active {
+  background-color: var(--active-btn-bg);
+  color: var(--text-active);
+  box-shadow: 0 0 1.5rem var(--active-glow-color),
+              inset 0 0 0.5rem rgba(0,0,0,0.15); /* Subtle inner shadow */
+  transform: translateY(-0.125rem) translateZ(5px); /* Slight lift and 3D push */
+  animation: active-pulse 2s infinite alternate ease-in-out;
+}
+
+.nav-item.active .nav-item-text,
+.nav-item.active .nav-item-icon {
+  color: var(--icon-active);
+}
+
+/* Inactive Icon Items (override base padding) */
+.nav-item:not(.active) {
+  padding: 0.75rem; /* 12px all around for icon-only items */
+  background-color: transparent;
+}
+
+.nav-item:not(.active) .nav-item-text {
+  display: none;
+}
+
+/* Icon Styling */
+.nav-item-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+              stroke 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* --- INTERACTIVITY & ANIMATIONS --- */
+
+/* Hover for Inactive Items */
+.nav-item:not(.active):hover {
+  color: var(--text-active); /* Icon color changes to white */
+  transform: translateY(-0.35rem) perspective(100px) rotateY(8deg) scale(1.05) translateZ(10px); /* Lift, 3D tilt, scale, and push forward */
+  box-shadow: 0 0.35rem 0.8rem var(--inactive-hover-glow-color); /* Soft shadow beneath icon */
+}
+
+.nav-item:not(.active):hover .nav-item-icon {
+  transform: scale(1.2) rotate(-7deg); /* Icon scales and rotates */
+  stroke: var(--icon-active); /* Ensure icon color is active white */
+}
+
+/* Hover for Active Item */
+.nav-item.active:hover {
+  background-color: var(--active-btn-bg-hover);
+  box-shadow: 0 0 2.2rem rgba(107, 71, 176, 0.7), /* Enhanced glow */
+              inset 0 0 0.85rem rgba(0,0,0,0.25);
+  transform: translateY(-0.35rem) scale(1.02) translateZ(10px); /* More pronounced lift and slight scale */
+  animation: none; /* Pause active-pulse on hover */
+}
+
+/* Active item click/press effect */
+.nav-item:active {
+  transform: translateY(0) scale(0.97) translateZ(0); /* Press down and flatten effect */
+  box-shadow: 0 0 0.5rem rgba(107, 71, 176, 0.3), inset 0 0 1rem rgba(0,0,0,0.3);
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+/* Ripple effect (JS driven, CSS for appearance) */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--ripple-color);
+  animation: ripple-animation 0.6s ease-out forwards;
+  pointer-events: none;
+  transform: scale(0);
+  opacity: 1;
+  z-index: 2; /* Above other content */
+}
+
+@keyframes ripple-animation {
+  from {
+    transform: scale(0);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(4); /* Expand significantly */
+    opacity: 0;
+  }
+}
+
+/* Keyframe for subtle pulse on active item for perpetual glow */
+@keyframes active-pulse {
+  0% { 
+    box-shadow: 0 0 1.5rem var(--active-glow-color), inset 0 0 0.5rem rgba(0,0,0,0.15);
+    transform: translateY(-0.125rem) translateZ(5px);
+  }
+  50% { 
+    box-shadow: 0 0 1.8rem rgba(107, 71, 176, 0.6), inset 0 0 0.6rem rgba(0,0,0,0.2);
+    transform: translateY(-0.15rem) translateZ(7px);
+  }
+  100% { 
+    box-shadow: 0 0 1.5rem var(--active-glow-color), inset 0 0 0.5rem rgba(0,0,0,0.15);
+    transform: translateY(-0.125rem) translateZ(5px);
+  }
+}
+</style></head>
+        <body><nav class="navigation-bar" aria-label="Main navigation">
+  <button class="nav-item active" aria-current="page" aria-label="Home">
+    <svg class="nav-item-icon" viewBox="0 0 24 24">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="nav-item-text">Home</span>
+  </button>
+
+  <button class="nav-item" aria-label="Archive">
+    <svg class="nav-item-icon" viewBox="0 0 24 24">
+      <polyline points="21 8 21 21 3 21 3 8"></polyline>
+      <rect x="1" y="3" width="22" height="5"></rect>
+      <line x1="10" y1="12" x2="14" y2="12"></line>
+    </svg>
+  </button>
+
+  <button class="nav-item" aria-label="Profile">
+    <svg class="nav-item-icon" viewBox="0 0 24 24">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+  </button>
+</nav><script>document.addEventListener('DOMContentLoaded', () => {
+  const navItems = document.querySelectorAll('.nav-item');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      // Create ripple effect
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+      this.appendChild(ripple);
+
+      const size = Math.max(this.clientWidth, this.clientHeight);
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left - (size / 2);
+      const y = e.clientY - rect.top - (size / 2);
+
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+
+      // Remove ripple after animation
+      ripple.addEventListener('animationend', () => {
+        ripple.remove();
+      });
+
+      // Handle active state toggle
+      navItems.forEach(navItem => {
+        if (navItem !== this) {
+          navItem.classList.remove('active');
+          navItem.removeAttribute('aria-current');
+        }
+      });
+      this.classList.add('active');
+      this.setAttribute('aria-current', 'page');
+    });
+  });
+});</script></body>
+      </html>
+    

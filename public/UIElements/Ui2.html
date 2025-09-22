@@ -1,0 +1,239 @@
+
+   <html>
+        <head><style>:root {
+  font-size: 16px; /* Base for rem units for responsive scaling */
+}
+
+body {
+  background-color: #1a202c;
+  margin: 0;
+  min-height: 100vh; /* Ensure body takes full viewport height for absolute positioning context */
+  overflow: hidden; /* Prevents scrollbars from ripple effect */
+  display: block; /* Override any default flex/grid on body */
+}
+
+.toggle-switch {
+  position: absolute;
+  /* 214px / 16 = 13.375rem */
+
+  width: 8rem; /* 128px / 16 = 8rem */
+  height: 4.5rem; /* 72px / 16 = 4.5rem */
+
+  border-radius: 2.25rem; /* 36px / 16 = 2.25rem */
+  cursor: pointer;
+  outline: none; /* Handled by focus-visible pseudo-class for accessibility */
+  overflow: hidden; /* Ensures thumb stays within track bounds and ripple is clipped */
+  position: relative; /* Establishes positioning context for the thumb */
+
+  /* Advanced focus glow effect */
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.toggle-switch:focus-visible {
+  box-shadow:
+    0 0 0 0.125rem rgba(255, 255, 255, 0.5), /* Inner white glow */
+    0 0 0 0.25rem rgba(255, 255, 255, 0.2); /* Outer softer white glow */
+}
+
+.toggle-track {
+  width: 100%;
+  height: 100%;
+  background-color: #a9b2be;
+  border-radius: 2.25rem; /* 36px */
+  box-shadow:
+    inset 0.0625rem 0.0625rem 0.125rem 0rem rgba(0, 0, 0, 0.1), /* 1px 1px 2px */
+    inset -0.0625rem -0.0625rem 0.125rem 0rem rgba(255, 255, 255, 0.3); /* -1px -1px 2px */
+  transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+}
+
+.toggle-switch.is-on .toggle-track {
+  background-color: #6cb5df; /* Active state background color */
+  box-shadow:
+    inset 0.0625rem 0.0625rem 0.125rem 0rem rgba(0, 0, 0, 0.2),
+    inset -0.0625rem -0.0625rem 0.125rem 0rem rgba(255, 255, 255, 0.4);
+}
+
+.toggle-thumb {
+  width: 4rem; /* 64px */
+  height: 4rem; /* 64px */
+  background-color: #c0c7d0;
+  border-radius: 2rem; /* 32px */
+  position: absolute;
+  top: 0.25rem; /* 4px */
+  left: 0.25rem; /* 4px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow:
+    0.625rem 0.625rem 1.25rem 0rem #8b929b, /* 10px 10px 20px */
+    -0.3125rem -0.3125rem 0.625rem 0rem #e7eff7, /* -5px -5px 10px */
+    inset 0.1875rem 0.1875rem 0.375rem 0rem #ffffff, /* 3px 3px 6px */
+    inset -0.1875rem -0.1875rem 0.375rem 0rem #7c838d; /* -3px -3px 6px */
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), /* Springy slide effect */
+              box-shadow 0.4s ease-in-out,
+              background-color 0.4s ease-in-out;
+}
+
+.toggle-switch.is-on .toggle-thumb {
+  transform: translateX(3.75rem); /* 60px: 128px (track width) - 64px (thumb width) - 4px (initial left) = 60px */
+  background-color: #d8e5ef; /* Lighter active color for thumb */
+  box-shadow:
+    0.3125rem 0.3125rem 1rem 0rem #5a94c0, /* Outer shadow shifts and changes color */
+    -0.15625rem -0.15625rem 0.5rem 0rem #eff7ff,
+    inset 0.1875rem 0.1875rem 0.375rem 0rem #ffffff,
+    inset -0.1875rem -0.1875rem 0.375rem 0rem #98a3b0; /* Inner shadow slightly darker */
+}
+
+/* 3D Press Effect on Thumb (on active/focus) */
+.toggle-switch:active .toggle-thumb,
+.toggle-switch:focus-visible .toggle-thumb {
+  transform: translateY(0.0625rem) scale(0.98); /* Subtle sink and scale down */
+  box-shadow:
+    0.3125rem 0.3125rem 0.625rem 0rem #8b929b, /* Smaller, softer outer shadow on press */
+    -0.15625rem -0.15625rem 0.3125rem 0rem #e7eff7,
+    inset 0.09375rem 0.09375rem 0.1875rem 0rem #ffffff, /* Inner shadow slightly compressed */
+    inset -0.09375rem -0.09375rem 0.1875rem 0rem #7c838d;
+}
+
+.toggle-switch.is-on:active .toggle-thumb,
+.toggle-switch.is-on:focus-visible .toggle-thumb {
+  transform: translateX(3.75rem) translateY(0.0625rem) scale(0.98); /* Combine slide and press for active state */
+  box-shadow:
+    0.15625rem 0.15625rem 0.5rem 0rem #5a94c0,
+    -0.078125rem -0.078125rem 0.25rem 0rem #eff7ff,
+    inset 0.09375rem 0.09375rem 0.1875rem 0rem #ffffff,
+    inset -0.09375rem -0.09375rem 0.1875rem 0rem #98a3b0;
+}
+
+.dot-grid {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem; /* 6.4px */
+  padding: 0.4rem; /* 6.4px */
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; /* Include padding in width/height */
+}
+
+.dot {
+  width: 0.5rem; /* 8px */
+  height: 0.5rem; /* 8px */
+  background-color: #c0c7d0;
+  border-radius: 0.125rem; /* 2px */
+  box-shadow:
+    inset 0.0625rem 0.0625rem 0.125rem 0rem #a3acbb, /* 1px 1px 2px */
+    inset -0.0625rem -0.0625rem 0.125rem 0rem #d0d7e0; /* -1px -1px 2px */
+  transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out, transform 0.2s ease-out;
+}
+
+.toggle-switch.is-on .dot {
+  background-color: #dde8f0; /* Lighter dots for active state */
+  box-shadow:
+    inset 0.0625rem 0.0625rem 0.125rem 0rem #b3bcc7,
+    inset -0.0625rem -0.0625rem 0.125rem 0rem #e8f0f5;
+  animation: dot-pulse 0.8s infinite alternate ease-in-out; /* Subtle pulse for active dots */
+}
+
+@keyframes dot-pulse {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.05);
+    opacity: 0.95;
+  }
+}
+
+/* Ripple effect for interactive feedback */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white ripple */
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear forwards;
+  pointer-events: none; /* Allows clicks to pass through */
+  z-index: 10; /* Ensures ripple is on top of other elements */
+}
+
+@keyframes ripple-animation {
+  from {
+    transform: scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(3.5); /* Expands to a large size */
+    opacity: 0;
+  }
+}</style></head>
+        <body><div class="toggle-switch" role="switch" aria-checked="false" tabindex="0">
+  <div class="toggle-track"></div>
+  <div class="toggle-thumb">
+    <div class="dot-grid">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+</div><script>document.addEventListener('DOMContentLoaded', () => {
+  const toggleSwitch = document.querySelector('.toggle-switch');
+
+  if (toggleSwitch) {
+    toggleSwitch.addEventListener('click', (e) => {
+      // Toggle state class and ARIA attribute
+      const isOn = toggleSwitch.classList.toggle('is-on');
+      toggleSwitch.setAttribute('aria-checked', isOn);
+
+      // Create ripple effect element
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+
+      // Calculate click position relative to the toggle switch
+      const rect = toggleSwitch.getBoundingClientRect();
+      const x = e.clientX - rect.left; // X position within the element
+      const y = e.clientY - rect.top;  // Y position within the element
+
+      // Position the ripple at the click point
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+
+      // Set initial size of ripple to be small and centered on click
+      const initialSize = Math.max(toggleSwitch.offsetWidth, toggleSwitch.offsetHeight) / 8; 
+      ripple.style.width = `${initialSize}px`;
+      ripple.style.height = `${initialSize}px`;
+      ripple.style.marginLeft = `-${initialSize / 2}px`;
+      ripple.style.marginTop = `-${initialSize / 2}px`;
+
+      toggleSwitch.appendChild(ripple);
+
+      // Remove ripple after its animation completes
+      ripple.addEventListener('animationend', () => {
+        ripple.remove();
+      });
+    });
+
+    // Handle keyboard interaction for accessibility (Enter/Spacebar)
+    toggleSwitch.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault(); // Prevent default action (e.g., scrolling for spacebar)
+        toggleSwitch.click(); // Programmatically trigger a click event
+      }
+    });
+  }
+});</script></body>
+      </html>
+    

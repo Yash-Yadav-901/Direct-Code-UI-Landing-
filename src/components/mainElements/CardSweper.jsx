@@ -12,7 +12,7 @@ const UiElements = [
 
 function CardSweeper() {
     return (
-        <div>
+        <div className="">
             <CardCarousel images={UiElements} />
         </div>
     )

@@ -1,0 +1,166 @@
+
+      <html>
+        <head><style>:root {
+  --canvas-bg: #6A7188;
+  --block-top-color-main: #6971ED;
+  --block-top-color-highlight: #838AF7;
+  --block-top-color-darker: #5C62C8;
+  --block-side-color: #5158C0;
+  --block-cast-shadow-color: #343944;
+  --note-main-color: #DDDEEB;
+  --note-highlight-color: #F0F0FF;
+  --note-shadow-color: #C0C0D0;
+
+  font-size: 16px; /* Base for rem units */
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--canvas-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden; /* Prevent scrollbar from large shadows/animations */
+  perspective: 1000px; /* For overall 3D context */
+}
+
+.main-icon-container {
+  position: relative;
+  width: clamp(15rem, 40vh, 25rem); /* Responsive width, ~65% of typical canvas height at 100vh */
+  height: clamp(15rem, 40vh, 25rem);
+  border-radius: calc(clamp(15rem, 40vh, 25rem) * 0.15);
+  overflow: hidden; /* For ripple effect and internal elements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  will-change: transform, box-shadow;
+
+  /* Initial 3D tilt and lift for floating effect */
+  transform: translateY(-0.5rem) rotateX(5deg) rotateY(-5deg);
+
+  /* Top face color and shading effect */
+  background: radial-gradient(
+    at 80% 20%,
+    var(--block-top-color-highlight) 0%,
+    var(--block-top-color-main) 50%,
+    var(--block-top-color-darker) 100%
+  );
+
+  /* Shadows for 3D effect: inner edges, simulated side, and cast shadow */
+  box-shadow:
+    /* Inner edge shadow - subtle darker edges for depth */
+    inset 0.2rem 0.2rem 0.6rem rgba(0, 0, 0, 0.2),
+    inset -0.2rem -0.2rem 0.6rem rgba(255, 255, 255, 0.1),
+
+    /* Simulated left side face and general depth towards bottom-right */
+    0.4rem 0.4rem 0.1rem 0.1rem var(--block-side-color),
+
+    /* Cast shadow onto background */
+    0.8rem 0.8rem 2rem var(--block-cast-shadow-color);
+
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.2), box-shadow 0.4s ease-in-out;
+}
+
+.main-icon-container:hover {
+  transform: translateY(-1.2rem) rotateX(8deg) rotateY(-8deg) scale(1.03); /* Lift higher, tilt more, slightly grow */
+  box-shadow:
+    inset 0.2rem 0.2rem 0.6rem rgba(0, 0, 0, 0.2),
+    inset -0.2rem -0.2rem 0.6rem rgba(255, 255, 255, 0.1),
+    0.4rem 0.4rem 0.1rem 0.1rem var(--block-side-color),
+    /* Expanded and slightly darker cast shadow */
+    1.2rem 1.2rem 3rem 0.5rem rgba(52, 57, 68, 0.7),
+    /* Vibrant, expanding glow effect */
+    0 0 2rem 0.3rem rgba(105, 113, 237, 0.8);
+}
+
+.main-icon-container:active {
+  transform: translateY(0rem) rotateX(0deg) rotateY(0deg) scale(0.95); /* Press down, flatten out, shrink */
+  box-shadow:
+    inset 0.2rem 0.2rem 0.6rem rgba(0, 0, 0, 0.2),
+    inset -0.2rem -0.2rem 0.6rem rgba(255, 255, 255, 0.1),
+    0.4rem 0.4rem 0.1rem 0.1rem var(--block-side-color),
+    /* Compressed cast shadow */
+    0.5rem 0.5rem 1rem 0.1rem var(--block-cast-shadow-color);
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.musical-note-icon {
+  width: 55%; /* relative to parent container's width */
+  height: 55%; /* relative to parent container's height */
+  display: block; /* Ensures proper sizing and centering of SVG */
+  /* Simulates beveling with subtle drop shadows for highlights/shadows */
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.1)) 
+          drop-shadow(-0.5px -0.5px 0.5px rgba(255,255,255,0.2)); 
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.2);
+}
+
+.main-icon-container:hover .musical-note-icon {
+  transform: translateY(-0.5rem) scale(1.08) rotate(-5deg); /* Lift, grow, subtle spin */
+}
+
+/* Ripple click effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%);
+  transform: scale(0);
+  animation: ripple-animation 0.6s cubic-bezier(0.1, 0.6, 0.4, 1.0);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transform-origin: center center;
+}
+
+@keyframes ripple-animation {
+  0% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.5); /* Expands significantly */
+    opacity: 0;
+  }
+}
+</style></head>
+        <body><div class="main-icon-container">
+  <svg class="musical-note-icon" viewBox="0 0 100 100">
+    <path d="M70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 L70.00,60.00 C70.00,66.63 64.63,72.00 58.00,72.00 C51.37,72.00 46.00,66.63 46.00,60.00 C46.00,53.37 51.37,48.00 58.00,48.00 C58.91,48.00 59.79,48.11 60.62,48.31 L60.62,20.00 L70.00,20.00 Z M70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 Z M79.00,42.00 C79.00,42.00 79.00,42.00 79.00,42.00 C79.00,42.00 79.00,42.00 79.00,42.00 C79.00,42.00 79.00,42.00 79.00,42.00 C79.00,42.00 79.00,42.00 79.00,42.00 C80.20,42.40 81.33,42.92 82.35,43.55 C82.35,43.55 82.35,43.55 82.35,43.55 C82.35,43.55 82.35,43.55 82.35,43.55 C82.35,43.55 82.35,43.55 82.35,43.55 C84.82,45.10 86.68,47.45 87.69,50.18 C87.69,50.18 87.69,50.18 87.69,50.18 C87.69,50.18 87.69,50.18 87.69,50.18 C87.69,50.18 87.69,50.18 87.69,50.18 C89.33,54.71 89.03,59.83 86.69,63.95 C86.69,63.95 86.69,63.95 86.69,63.95 C86.69,63.95 86.69,63.95 86.69,63.95 C86.69,63.95 86.69,63.95 86.69,63.95 C84.05,68.64 79.40,71.69 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 C74.00,72.00 74.00,72.00 74.00,72.00 L74.00,60.00 C74.00,60.00 74.00,60.00 74.00,60.00 C74.00,60.00 74.00,60.00 74.00,60.00 C74.00,60.00 74.00,60.00 74.00,60.00 C74.00,60.00 74.00,60.00 74.00,60.00 C74.00,60.00 74.00,60.00 74.00,60.00 L74.00,20.00 C74.00,20.00 74.00,20.00 74.00,20.00 C74.00,20.00 74.00,20.00 74.00,20.00 C74.00,20.00 74.00,20.00 74.00,20.00 C74.00,20.00 74.00,20.00 74.00,20.00 C74.00,20.00 74.00,20.00 74.00,20.00 L70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 C70.00,20.00 70.00,20.00 70.00,20.00 Z M58.00,52.00 C53.58,52.00 50.00,55.58 50.00,60.00 C50.00,64.42 53.58,68.00 58.00,68.00 C62.42,68.00 66.00,64.42 66.00,60.00 C66.00,55.58 62.42,52.00 58.00,52.00 Z" fill="url(#noteGradient)" />
+    <defs>
+      <linearGradient id="noteGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="var(--note-highlight-color)" />
+        <stop offset="50%" stop-color="var(--note-main-color)" />
+        <stop offset="100%" stop-color="var(--note-shadow-color)" />
+      </linearGradient>
+    </defs>
+  </svg>
+</div><script>document.querySelector('.main-icon-container').addEventListener('click', function(e) {
+  const container = this;
+
+  // Remove any existing ripples to prevent accumulation
+  const existingRipples = container.querySelectorAll('.ripple');
+  existingRipples.forEach(ripple => ripple.remove());
+
+  const ripple = document.createElement('span');
+  ripple.classList.add('ripple');
+
+  const rect = container.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height) * 1.5; /* Make ripple larger than container */
+  const x = e.clientX - rect.left - size / 2;
+  const y = e.clientY - rect.top - size / 2;
+
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+
+  container.appendChild(ripple);
+
+  ripple.addEventListener('animationend', () => {
+    ripple.remove();
+  });
+});</script></body>
+      </html>
+    
