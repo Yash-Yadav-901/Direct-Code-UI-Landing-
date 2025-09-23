@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Logo from '../Logo';
-import { FaAlignRight } from "react-icons/fa6";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -20,7 +19,6 @@ function Header() {
   useEffect(() => {
     return () => {
       document.body.style.overflow = 'auto';
-      // Clean up ScrollTrigger
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
       }
@@ -31,48 +29,42 @@ function Header() {
     const header = headerRef.current;
     if (!header) return;
 
+    // Clear any existing ScrollTriggers
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
     // Set initial state
     gsap.set(header, {
-      top: '1.25rem', // top-5 equivalent
+      top: '1.25rem',
       left: '50%',
       x: '-50%',
       width: '100%',
-      maxWidth: '80rem', // max-w-7xl equivalent
-      borderRadius: '0.75rem', // rounded-xl equivalent
+      maxWidth: '80rem',
+      borderRadius: '0.75rem',
     });
 
-    // Create the scroll-triggered animation
-    scrollTriggerRef.current = ScrollTrigger.create({
-      trigger: document.body,
-      start: 'top+=100 top', // Start transforming after 100px of scroll
-      end: 'max',
-      toggleClass: {
-        targets: header,
-        className: 'header-scrolled'
-      },
-      onEnter: () => {
-        gsap.to(header, {
-          top: 0,
-          left: 0,
-          x: 0,
-          maxWidth: '100%',
-          borderRadius: 0,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      },
-      onLeaveBack: () => {
-        gsap.to(header, {
-          top: '1.25rem',
-          left: '50%',
-          x: '-50%',
-          maxWidth: '80rem',
-          borderRadius: '0.75rem',
-          duration: 0.3,
-          ease: 'power2.out'
-        });
+    // Create a single smooth animation timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: document.documentElement,
+        start: 'top top',
+        end: 'top+=100 top',
+        scrub: true, // This creates smooth scrolling-based animation
+        markers: false, // Set to true to see the trigger points
       }
     });
+
+    // Animate to scrolled state
+    tl.to(header, {
+      top: 0,
+      left: 0,
+      x: 0,
+      maxWidth: '100%',
+      borderRadius: 0,
+      duration: 0.3,
+      ease: 'power2.out',
+    });
+
+    scrollTriggerRef.current = tl;
 
     return () => {
       if (scrollTriggerRef.current) {
@@ -82,19 +74,20 @@ function Header() {
   }, []);
 
   return (
-    <header 
+    <header
       ref={headerRef}
-      className="fixed z-50 bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 transition-all duration-300 header-outer"
+      // REMOVED: transition-all duration-300 - This was causing the conflict!
+      className="fixed z-50 bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 header-outer"
     >
-      <nav className="flex items-center justify-between px-1">
+      <nav className="flex items-center justify-between px-6 ">
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link to="/">
-            <Logo/>
+            <Logo />
           </Link>
         </div>
 
-        {/* Desktop & Mobile Menu */}
+        {/* Menu */}
         <div className="flex items-center">
           {/* Mobile Menu Button */}
           <div className="lg:hidden mr-2">
@@ -102,35 +95,15 @@ function Header() {
               onClick={toggleMenu}
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
-              className="text-white focus:outline-none"
+              className="text-white focus:outline-none transition-transform duration-200 hover:scale-110"
             >
               {isMenuOpen ? (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16m-7 6h7"
-                  />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
                 </svg>
               )}
             </button>
@@ -151,10 +124,8 @@ function Header() {
                       to={path}
                       onClick={() => setIsMenuOpen(false)}
                       className={({ isActive }) =>
-                        `block py-2 px-3 rounded-lg transition-colors ${
-                          isActive
-                            ? 'text-white font-bold'
-                            : 'hover:text-orange-400'
+                        `block py-2 px-3 rounded-lg transition-colors duration-200 ${
+                          isActive ? 'text-white font-bold' : 'hover:text-orange-400'
                         }`
                       }
                     >
@@ -169,13 +140,13 @@ function Header() {
             <div className="flex flex-col lg:flex-row items-center mt-4 lg:mt-0 lg:space-x-2">
               <Link
                 to="#"
-                className="text-gray-800 bg-white/80 hover:bg-white font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition"
+                className="text-gray-800 bg-white/80 hover:bg-white font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition-colors duration-200"
               >
                 Log in
               </Link>
               <Link
                 to="#"
-                className="text-white bg-orange-700 hover:bg-orange-800 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition"
+                className="text-white bg-orange-700 hover:bg-orange-800 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition-colors duration-200"
               >
                 Get started
               </Link>
