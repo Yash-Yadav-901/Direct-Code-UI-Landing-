@@ -29,10 +29,9 @@ function Header() {
     const header = headerRef.current;
     if (!header) return;
 
-    // Clear any existing ScrollTriggers
+   
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
-    // Set initial state
     gsap.set(header, {
       top: '1.25rem',
       left: '50%',
@@ -42,18 +41,18 @@ function Header() {
       borderRadius: '0.75rem',
     });
 
-    // Create a single smooth animation timeline
+   
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: document.documentElement,
         start: 'top top',
         end: 'top+=100 top',
-        scrub: true, // This creates smooth scrolling-based animation
-        markers: false, // Set to true to see the trigger points
+        scrub: true, 
+        markers: false, 
       }
     });
 
-    // Animate to scrolled state
+    
     tl.to(header, {
       top: 0,
       left: 0,
@@ -76,7 +75,7 @@ function Header() {
   return (
     <header
       ref={headerRef}
-      // REMOVED: transition-all duration-300 - This was causing the conflict!
+
       className="fixed z-50 bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 header-outer"
     >
       <nav className="flex items-center justify-between px-6 ">
@@ -87,9 +86,9 @@ function Header() {
           </Link>
         </div>
 
-        {/* Menu */}
+        
         <div className="flex items-center">
-          {/* Mobile Menu Button */}
+          
           <div className="lg:hidden mr-2">
             <button
               onClick={toggleMenu}
@@ -109,7 +108,7 @@ function Header() {
             </button>
           </div>
 
-          {/* Menu Links */}
+         
           <div
             className={`absolute top-20 right-4 p-1 lg:static lg:flex lg:items-center lg:space-x-6 transition-all duration-300 ${
               isMenuOpen ? 'block' : 'hidden'
