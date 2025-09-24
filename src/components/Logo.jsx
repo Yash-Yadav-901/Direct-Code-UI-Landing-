@@ -67,9 +67,9 @@ const Logo = () => {
             `}</style>
             
             {/* Main container for the logo, using Tailwind Flexbox for alignment */}
-            <div className="logo-container flex items-center space-x-2 rounded-lg p-4">
+            <div className="logo-container flex items-center space-x-2 rounded-lg p-4 ">
                 {/* Icon container */}
-                <div className="logo-icon relative h-5 w-5 "></div>
+                <div className="logo-icon relative h-5 w-5 " ></div>
                 {/* Text container */}
                 <div className="flex text-2xl font-bold tracking-tight">
                     {/* "DirectCode" part in light gray */}

@@ -61,8 +61,8 @@ function UIShowCase() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
-        <div className="text-center mb-16 ui-heading">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-500">
+        <div className="text-center mb-16 ui-heading ">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
             Some UI Elements From Public Library
           </h2>
           <p className="text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
