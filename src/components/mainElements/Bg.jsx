@@ -19,7 +19,7 @@ function Bg() {
         opacity={0.8}
       />
 
-      {/* Overlay content */}
+    
       <div className="absolute top-20 left-0 w-full h-full z-10 flex flex-col items-center justify-center text-white px-4 text-center">
         <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
           Build Manage Collaborate
