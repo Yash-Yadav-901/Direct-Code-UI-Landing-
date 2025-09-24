@@ -115,7 +115,7 @@ function Header() {
             } lg:block`}
           >
             <ul className="flex flex-col lg:flex-row lg:space-x-6 font-medium text-white">
-              {['/', '/about', '/contact', '/github'].map((path, idx) => {
+              {['/', '/about', '/contact', 'https://github.com/Yash-Yadav-901/Direct-Code-Dev'].map((path, idx) => {
                 const label = ['Home', 'About', 'Contact', 'GitHub'][idx];
                 return (
                   <li key={path}>
