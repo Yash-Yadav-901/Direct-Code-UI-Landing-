@@ -7,7 +7,7 @@ import { IoIosArrowDropright } from "react-icons/io";
 function Bg() {
   return (
     <div className="relative w-full h-[800px] overflow-hidden bg-black">
-      {/* Background animation */}
+  
       <RippleGrid
         enableRainbow={false}
         gridColor="#4287f5"
