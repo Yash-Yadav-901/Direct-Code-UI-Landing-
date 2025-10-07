@@ -124,9 +124,11 @@ function NormalShowCase() {
         </div>
 
         <div className="text-center mt-16">
+          <a href='https://app.directcodeui.in/' target='_blank' rel='noreferrer' className='inline-block'>
           <button className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
             Explore All Features
           </button>
+          </a>
           <p className="text-gray-400 mt-4">Join thousands of developers building better UI faster</p>
         </div>
       </div>
