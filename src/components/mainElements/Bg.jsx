@@ -28,7 +28,7 @@ function Bg() {
           Design faster. Build smarter. Capture UI from any site and remix it into your own library.
         </p>
         <div className="flex gap-4 sm:gap-10 mb-6">
-        <a href='https://app.directcodeui.in/' target='_blank' rel='noreferrer'>
+        <a href='https://app.directcodeui.in/' target='_blank' rel='noreferrer ' className='inline-block cursor-pointer'>
           <button className="border border-white bg-white/10 backdrop-blur-xl text-white flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm sm:text-base hover:bg-blue-700 transition" style={{ boxShadow: '0 4px 4px black', textShadow: '0.5 2px 2px black' }}>
             Get Started <IoIosArrowDropright size={20} />
           </button>

@@ -106,11 +106,11 @@ function UIShowCase() {
 
         {/* CTA */}
         <div className="text-center mt-16">
-         
+         <a href='https://app.directcodeui.in/' target='_blank' rel='noreferrer' className='inline-block cursor-pointer'>
           <button className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
             Explore UI Library
           </button>
-          
+          </a>
           <p className="text-gray-400 mt-4">
             Build UI Elements, make them public, use Others UI
           </p>

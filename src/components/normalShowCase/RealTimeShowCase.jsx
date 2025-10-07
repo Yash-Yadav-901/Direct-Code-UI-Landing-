@@ -163,7 +163,7 @@ function RealTimeShowCase() {
 
         {/* Call to action */}
         <div className="text-center">
-          <a href='https://app.directcodeui.in/' target='_blank' rel='noreferrer' className='inline-block'>
+          <a href='https://app.directcodeui.in/' target='_blank' rel='noreferrer' className='inline-block cursor-pointer'>
           <button className=" bg-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl inline-flex items-center">
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17 4a5 5 0 015 5v6a5 5 0 01-5 5H7a5 5 0 01-5-5V9a5 5 0 015-5h10zm0 2H7a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V9a3 3 0 00-3-3zm-5 3a4 4 0 110 8 4 4 0 010-8zm0 2a2 2 0 100 4 2 2 0 000-4z" />
