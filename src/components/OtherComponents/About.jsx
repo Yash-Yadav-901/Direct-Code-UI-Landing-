@@ -57,7 +57,7 @@ const AboutPage = () => {
                     </ul>
                 </div>
 
-                {/* Developer Ethos */}
+             
                 <div>
                     <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
                         <FaLaptopCode /> Built by Developers, for Developers
@@ -68,7 +68,7 @@ const AboutPage = () => {
                 </div>
             </div>
 
-            {/* Creator Credit */}
+            
             <div className="mt-20 text-center">
                 <h3 className="text-xl font-semibold text-white mb-2 flex items-center justify-center gap-2">
                     <FaLightbulb /> Crafted by Yash Yadav
@@ -96,7 +96,7 @@ const AboutPage = () => {
                 </div>
             </div>
 
-            {/* CTA */}
+           
             <div className="mt-16 text-center">
                 <p className="text-gray-400 text-lg mb-4">
                     Ready to build smarter? Join thousands of developers using DirectCode UI to accelerate their workflow and share their creativity.
