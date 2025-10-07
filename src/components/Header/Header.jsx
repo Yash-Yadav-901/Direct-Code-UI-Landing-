@@ -139,12 +139,14 @@ function Header() {
             <div className="flex flex-col lg:flex-row items-center mt-4 lg:mt-0 lg:space-x-2">
               <a
                 href='https://app.directcodeui.in/singin'
+                target='_blank'
                 className="text-gray-800 bg-white/80 hover:bg-white font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition-colors duration-200 cursor-pointer"
               >
                 Log in
               </a>
               <a
                 href='https://app.directcodeui.in'
+                target='_blank'
                 className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition-colors duration-200 cursor-pointer"
               >
                 Get started
