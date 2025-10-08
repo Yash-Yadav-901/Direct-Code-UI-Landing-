@@ -114,7 +114,7 @@ function Header() {
               isMenuOpen ? 'block' : 'hidden'
             } lg:block`}
           >
-            <ul className="flex flex-col lg:flex-row lg:space-x-6 font-medium text-white">
+            <ul className="flex flex-col lg:flex-row lg:space-x-6 font-medium text-white bg-gray-500 lg:bg-transparent lg:rounded-none rounded-2xl">
               {['/', '/about', '/contact', 'https://github.com/Yash-Yadav-901/Direct-Code-Dev'].map((path, idx) => {
                 const label = ['Home', 'About', 'Contact', 'GitHub'][idx];
                 return (
@@ -136,7 +136,7 @@ function Header() {
             </ul>
 
             {/* Buttons */}
-            <div className="flex flex-col lg:flex-row items-center mt-4 lg:mt-0 lg:space-x-2">
+            <div className="flex flex-col lg:flex-row items-center mt-4 lg:mt-0 lg:space-x-2   gap-y-2 lg:gap-y-0">
               <a
                 href='https://app.directcodeui.in/signin'
                 target='_blank'
