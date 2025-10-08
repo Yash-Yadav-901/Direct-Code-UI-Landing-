@@ -78,7 +78,7 @@ const AboutPage = () => {
                 </p>
                 <div className="flex justify-center space-x-4">
                     <a
-                        href="https://www.linkedin.com/in/yash-yadav-90"
+                        href="https://www.linkedin.com/in/yashyadav90/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition"
