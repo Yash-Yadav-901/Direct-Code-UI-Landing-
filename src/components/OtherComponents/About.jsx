@@ -78,7 +78,7 @@ const AboutPage = () => {
                 </p>
                 <div className="flex justify-center space-x-4">
                     <a
-                        href="https://www.linkedin.com/in/yash-yadav-dev"
+                        href="https://www.linkedin.com/in/yash-yadav-90"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition"
@@ -86,7 +86,7 @@ const AboutPage = () => {
                         LinkedIn
                     </a>
                     <a
-                        href="https://github.com/yashdev-ui"
+                        href="https://github.com/Yash-Yadav-901"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition"
