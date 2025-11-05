@@ -89,7 +89,7 @@ function ExtensionShowCase() {
         {/* Demo Video */}
         <div className="relative w-full max-w-3xl mx-auto rounded-lg overflow-hidden shadow-lg">
           <video
-            src="./Modern_UI_Library_Website_Design.mp4"
+            src="./Screen Recording 2025-11-05 105728.mp4"
             autoPlay
             loop
             muted
