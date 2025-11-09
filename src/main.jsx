@@ -13,12 +13,17 @@ import Policy from './components/policys/TermsofService.jsx'
 
 const router= createBrowserRouter(
   createRoutesFromElements(
+    <Route>
     <Route path="/" element={<MainLayout/>}>
       <Route path="" element={<AssambleHome/>}/>
       <Route path="contact" element={<ContactForm/>}/>
       <Route path="about" element={<AboutPage/>}/>
-      <Route path="PrivacyPolicy" element={<Policy/>}/>
+      
     </Route>
+
+   
+      <Route path="/PrivacyPolicy" element={<Policy/>}/>
+ </Route>
   )
 )
 createRoot(document.getElementById('root')).render(

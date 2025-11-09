@@ -10,7 +10,7 @@ const Footer = () => {
 
         {/* Links */}
         <div className="flex flex-col sm:flex-row sm:space-x-6 text-sm items-center">
-          <NavLink href="/PrivacyPolicy" className="hover:text-gray-400 transition-colors duration-300">Privacy Policy</NavLink>
+          <NavLink to="/PrivacyPolicy" className="hover:text-gray-400 transition-colors duration-300">Privacy Policy</NavLink>
           <a href="/terms" className="hover:text-gray-400 transition-colors duration-300">Terms of Service</a>
           <NavLink to="/contact" className="hover:text-gray-400 transition-colors duration-300">Contact</NavLink>
         </div>
