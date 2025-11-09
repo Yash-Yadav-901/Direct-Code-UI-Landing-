@@ -9,6 +9,7 @@ import IframeCarousel from './components/mainElements/IframeCarousel.jsx'
 import AssambleHome from './components/assambleHome/AssambleHome.jsx'
 import ContactForm from './components/OtherComponents/ContactUs.jsx'
 import AboutPage from './components/OtherComponents/About.jsx'
+import Policy from './components/policys/TermsofService.jsx'
 
 const router= createBrowserRouter(
   createRoutesFromElements(
@@ -16,7 +17,7 @@ const router= createBrowserRouter(
       <Route path="" element={<AssambleHome/>}/>
       <Route path="contact" element={<ContactForm/>}/>
       <Route path="about" element={<AboutPage/>}/>
-    
+      <Route path="PrivacyPolicy" element={<Policy/>}/>
     </Route>
   )
 )

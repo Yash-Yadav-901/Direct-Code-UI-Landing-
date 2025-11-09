@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -9,9 +10,9 @@ const Footer = () => {
 
         {/* Links */}
         <div className="flex flex-col sm:flex-row sm:space-x-6 text-sm items-center">
-          <a href="/privacy" className="hover:text-gray-400 transition-colors duration-300">Privacy Policy</a>
+          <NavLink href="/PrivacyPolicy" className="hover:text-gray-400 transition-colors duration-300">Privacy Policy</NavLink>
           <a href="/terms" className="hover:text-gray-400 transition-colors duration-300">Terms of Service</a>
-          <a href="/contact" className="hover:text-gray-400 transition-colors duration-300">Contact</a>
+          <NavLink to="/contact" className="hover:text-gray-400 transition-colors duration-300">Contact</NavLink>
         </div>
       </div>
     </footer>
