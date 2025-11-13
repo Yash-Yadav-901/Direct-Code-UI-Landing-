@@ -33,9 +33,12 @@ function Bg() {
             Get Started <IoIosArrowDropright size={20} />
           </button>
           </a>
+
+          <a href='https://chromewebstore.google.com/detail/fhgapmfjgjncfhjkbkpnpagflbcokihb?utm_source=item-share-cb' target='_blank' rel='noreferrer ' className='inline-block cursor-pointer'>
           <button className="bg-blue-600 text-white flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm sm:text-base hover:bg-blue-700 transition" style={{ boxShadow: '0 4px 4px black', textShadow: '0.5 2px 2px black' }}>
             Extension <FaDownload size={20} />
           </button>
+          </a>
         </div>
         <CardSweeper />
       </div>
