@@ -86,7 +86,7 @@ function RealTimeShowCase() {
     },
     {
       icon: <FaHistory size={28} />,
-      title: "Version History",
+      title: "Live Video chat",
       description: "Track changes and revert to previous versions anytime"
     }
   ];
