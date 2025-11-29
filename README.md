@@ -18,6 +18,7 @@
   <img src="https://img.shields.io/badge/⚡%20Real--Time-Collaboration-brightgreen?style=for-the-badge"/>
 </p>
 
+https://chromewebstore.google.com/detail/fhgapmfjgjncfhjkbkpnpagflbcokihb?utm_source=item-share-cb
 
 ## 🌟 Overview
 
