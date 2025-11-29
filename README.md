@@ -24,9 +24,13 @@
 **DirectCode UI** is a full-stack developer ecosystem that allows you to:
 
 ✅ Capture UI from any website via Chrome Extension
+
 ✅ Convert it into **clean HTML/CSS/JS using AI (Gemini)**
+
 ✅ Edit, download, save, or publish components
+
 ✅ Collaborate **in real time** (code + chat + video + screen share)
+
 ✅ Build component libraries and share with the world
 
 ---
