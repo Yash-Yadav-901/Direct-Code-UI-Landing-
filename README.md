@@ -1,7 +1,6 @@
 
----
 
-# 🚀 **DirectCode UI**
+# 🌐 **DirectCode UI - Landing Page DirectCode UI**
 
 ### *Capture • Convert • Collaborate • Build UI faster than ever*
 
@@ -11,23 +10,28 @@
 
 <p align="center">
   <a href="https://www.directcodeui.in/"><img src="https://img.shields.io/badge/🌍%20Live%20App-directcodeui.in-blue?style=for-the-badge"/></a>
-  <img src="https://img.shields.io/github/license/<your-user>/directcodeui-frontend?style=for-the-badge"/>
-  <img src="https://img.shields.io/github/stars/<your-user>/directcodeui-frontend?style=for-the-badge"/>
-  <img src="https://img.shields.io/github/issues/<your-user>/directcodeui-frontend?style=for-the-badge"/>
+  <a href="https://github.com/Yash-Yadav-901/Direct-Code-Dev"><img src="https://img.shields.io/badge/📁%20GitHub%20Repo-Direct--Code--Dev-black?style=for-the-badge"/></a>
+  <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge"/>
+  <img src="https://img.shields.io/github/stars/Yash-Yadav-901/Direct-Code-Dev?style=for-the-badge&color=yellow"/>
+  <img src="https://img.shields.io/github/issues/Yash-Yadav-901/Direct-Code-Dev?style=for-the-badge&color=red"/>
   <img src="https://img.shields.io/badge/💡%20AI%20Powered-Gemini-yellow?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/⚡%20Real--Time-Collaboration-brightgreen?style=for-the-badge"/>
 </p>
 
----
+https://chromewebstore.google.com/detail/fhgapmfjgjncfhjkbkpnpagflbcokihb?utm_source=item-share-cb
 
 ## 🌟 Overview
 
 **DirectCode UI** is a full-stack developer ecosystem that allows you to:
 
 ✅ Capture UI from any website via Chrome Extension
+
 ✅ Convert it into **clean HTML/CSS/JS using AI (Gemini)**
+
 ✅ Edit, download, save, or publish components
+
 ✅ Collaborate **in real time** (code + chat + video + screen share)
+
 ✅ Build component libraries and share with the world
 
 ---
@@ -45,6 +49,46 @@
 | 🔔 **Request Tracking System**     | Process → Done → Error notifications           |
 | 🚀 **Microservice Infrastructure** | Scalable backend with 6+ services              |
 
+🎯 AI-Powered UI Extraction
+
+  👉 Smart Capture: Use our Chrome extension to select any UI element with rectangle selection
+  
+  👉 Gemini AI Integration: Generate clean HTML, CSS, and JavaScript code automatically
+  
+  👉 Real-time Processing: Track request status with live notifications
+
+🏗️ Code Management
+
+  👉 Personal Libraries: Private and public libraries for your UI components
+  
+  👉 Public Library: Discover and use components from other developers
+  
+  👉 Code Editing: Built-in editor with HTML, CSS, and JS tabs
+  
+  👉 Export Options: Download code as ZIP files or copy directly
+
+👥 Real-time Collaboration
+
+  👉 Multi-user Rooms: Collaborate with up to 5 developers simultaneously
+  
+  👉 Live Code Editor: See collaborators' cursors with colored indicators
+  
+  👉 Video & Audio Chat: Integrated communication tools
+  
+  👉 Screen Sharing: Share your screen during collaboration sessions
+  
+  👉 Text Chat: Real-time messaging within rooms
+
+📱 User Experience
+
+  👉 User Accounts: Secure authentication and profile management
+  
+  👉 Notification System: Bell icon for tracking request status
+  
+  👉 Social Features: Like, save, follow, and view analytics
+  
+  👉 Admin Controls: Content moderation and post management
+  
 ---
 
 ## 🧠 How It Works
@@ -56,15 +100,117 @@
 5. Edit it, download it, or collaborate with team
 
 ---
+## System Architecture
 
-## 🏗 System Architecture
+```mermaid
+flowchart TD
+    %% ========== FRONTEND LAYER ==========
+    subgraph FRONTEND [Frontend Layer]
+        A[Chrome Extension]
+        B[Landing Page<br/>Home/About/Contact]
+        C[Authentication<br/>Login/SignUp]
+        D[User Dashboard]
+    end
 
+    %% ========== AI PROCESSING FLOW ==========
+    subgraph AI_FLOW [AI Processing Pipeline]
+        A -->|Request with ID| E[Backend Server]
+        E -->|Analyze screenshot| F{Gemini AI}
+        F -->|Get description| G{Result Valid?}
+        G -->|Yes| H[Save to Database & User Account]
+        G -->|No| I[Reject with Error]
+    end
+
+    %% ========== BACKEND SERVICES ==========
+    subgraph BACKEND [Backend Services]
+        subgraph MAIN_BACKEND [Main Backend - Render]
+            J[Primary Server]
+        end
+        
+        subgraph SECONDARY [Secondary Servers]
+            K[Hosted on Hostinger]
+            L[Hosted on Render]
+        end
+    end
+
+    %% ========== REAL-TIME FEATURES ==========
+    subgraph REALTIME [Real-time Collaboration]
+        subgraph ROOMS [Room Management]
+            M[Public/Private/Collaborative<br/>Saved Library]
+        end
+        
+        subgraph VIDEO [Video Communication]
+            N[WebRTC + Mediasoup<br/>Video/Audio/Screenshare]
+        end
+        
+        subgraph COLLAB [Live Coding]
+            O[Socket.io<br/>Real-time Chat & Coding<br/>Up to 5 Users]
+        end
+    end
+
+    %% ========== DATA LAYER ==========
+    subgraph DATA [Data Layer]
+        P[(MongoDB Database<br/>All Users Data)]
+    end
+
+    %% ========== NOTIFICATION SYSTEM ==========
+    subgraph NOTIFICATIONS [Notification System]
+        Q[Notification Service<br/>Logs in User Accounts]
+    end
+
+    %% ========== DATA FLOW CONNECTIONS ==========
+    A -->|Authentication| C
+    C -->|User data| P
+    D -->|User interactions| P
+    
+    E -->|Store results| H
+    H -->|User data| P
+    I -->|Error logs| P
+    
+    J -->|Data sync| K
+    J -->|Data sync| L
+    K -->|Persist data| P
+    L -->|Persist data| P
+    
+    M -->|Room data| P
+    N -->|Stream data| P
+    O -->|Collaboration data| P
+    
+    H -->|Success notifications| Q
+    I -->|Error notifications| Q
+    Q -->|Notification records| P
+
+    %% ========== STYLING ==========
+    classDef frontend fill:#1e3a8a,color:#ffffff,stroke:#1e40af,stroke-width:2px
+    classDef ai fill:#7c3aed,color:#ffffff,stroke:#8b5cf6,stroke-width:2px
+    classDef backend fill:#059669,color:#ffffff,stroke:#10b981,stroke-width:2px
+    classDef realtime fill:#dc2626,color:#ffffff,stroke:#ef4444,stroke-width:2px
+    classDef database fill:#ea580c,color:#ffffff,stroke:#f97316,stroke-width:2px
+    classDef notification fill:#7c2d12,color:#ffffff,stroke:#9a3412,stroke-width:2px
+    
+    class A,B,C,D frontend
+    class E,F,G,H,I ai
+    class J,K,L backend
+    class M,N,O realtime
+    class P database
+    class Q notification
 ```
-                          
-```
-
 ---
 
+## 🛠 Tech Stack
+
+| Layer      | Tech                      |
+| ---------- | ------------------------- |
+| Frontend   | React, Vite, Tailwind CSS |
+| Backend    | Node.js, Express          |
+| Database   | MongoDB                   |
+| AI         | Gemini API                |
+| Real-Time  | WebRTC(mediasoup), Socket.io |
+| Deployment | Vercel, Render/hostinger(vps)    |
+| Extension  | Chrome Manifest v3        |
+
+
+---
 ## 🧩 Microservices
 
 | Service                        | Purpose                             |
@@ -79,40 +225,50 @@
 
 ---
 
-## 🛠 Tech Stack
+## 📸 UI Preview:
 
-| Layer      | Tech                      |
-| ---------- | ------------------------- |
-| Frontend   | React, Vite, Tailwind CSS |
-| Backend    | Node.js, Express          |
-| Database   | MongoDB                   |
-| AI         | Gemini API                |
-| Real-Time  | WebRTC(meadia mediasoup), Socket.io |
-| Deployment | Vercel, Render/hostinger(vps)    |
-| Extension  | Chrome Manifest v3        |
+✅ Landing Page:
+
+<video src="https://github.com/user-attachments/assets/4dc1ab8e-23e5-47dd-9cbe-f64be2883f15" 
+       controls 
+       width="700" autoplay>
+</video>
+
+
+✅ extention:
+
+<video src="https://github.com/user-attachments/assets/9d1664b4-6f86-45a3-b8f1-b21c6752ab40" 
+       controls 
+       width="700" autoplay>
+</video>
+
+✅ Live realtime collabortion:
+
+<video src="https://github.com/user-attachments/assets/c8ec23cf-cd5a-4d6f-aa1e-0c429032ea8a" 
+       controls 
+       width="700" autoplay>
+</video>
+
+✅ creating self element
+
+<video src="https://github.com/user-attachments/assets/55adc108-4cac-4e53-9638-d2c53bae6eee" 
+       controls 
+       width="700" autoplay>
+</video>
+
 
 ---
 
-## 📸 UI Preview (Screenshots)
 
-| Dashboard                                | Component Library                       | Collaboration Room                         |
-| ---------------------------------------- | --------------------------------------- | ------------------------------------------ |
-| ![dash](https://via.placeholder.com/300) | ![lib](https://via.placeholder.com/300) | ![collab](https://via.placeholder.com/300) |
-
----
-
-## 🚀 Installation
-
-### Clone all services
+###  🚀 all the services
 
 ```bash
-git clone https://github.com/<your-user>/directcodeui-frontend
-git clone https://github.com/<your-user>/directcodeui-backend
-git clone https://github.com/<your-user>/directcodeui-extension
-git clone https://github.com/<your-user>/directcodeui-genai-server
-git clone https://github.com/<your-user>/directcodeui-realtime-server
-git clone https://github.com/<your-user>/directcodeui-video-server
-git clone https://github.com/<your-user>/directcodeui-notify-server
+Landing Page: https://github.com/Yash-Yadav-901/Direct-Code-UI-Landing-
+Main Frontend and Backend: https://github.com/Yash-Yadav-901/Direct-Code-Dev
+Extention: https://github.com/Yash-Yadav-901/Direct-Code-Dev-UI-UX-Capturing-Extension-
+GenAI: https://github.com/Yash-Yadav-901/Direct-Code-UI-GenAIandLogTracking-
+realtime features: https://github.com/Yash-Yadav-901/Direct-Code-UI-Real-time-
+real time: Videos:https://github.com/Yash-Yadav-901/Direct-Code-Ui-Real-time-V-server
 ```
 
 ### Install dependencies
@@ -151,30 +307,63 @@ npm run dev
 | Host Moderation (Kick/Block) | ✅      |
 
 ---
+🎯 Usage Guide
 
-## 📌 API Documentation (Core)
+✅ Getting Started
 
-### Status Tracking
+• Create an Account: Sign up on the DirectCodeUI web application
 
-```
-GET  /status/:requestId
-→ { requestId, status: "processing" | "done" | "error" }
-```
+• Install Extension: Add the DirectCodeUI extension to Chrome
 
-### Components
+• Configure API Key: Set your Gemini AI API key in the extension (stored locally)
 
-```
-GET  /components
-POST /components
-GET  /components/:id
-```
+✅ Capturing UI Elements
 
-### AI Generation
+•Browse to any website with UI elements you want to capture
 
-```
-POST /generate-ui
-Body: { image, prompt }
-```
+• Click the DirectCodeUI extension icon
+
+• Select rectangle selection mode and choose the UI element
+
+• Click "Capture" to generate code
+
+• Track progress via the bell icon in your dashboard
+
+✅ Managing Components
+
+• Private Library: Your personal collection of UI components
+
+• Public Library: Share your components with the community
+
+• Edit & Remix: Modify generated code directly in the editor
+
+✅ Collaborative Development
+
+• Create a Room from your dashboard
+
+• Invite Team Members (up to 5 users)
+
+• Start Coding with real-time collaboration
+
+• Use Communication Tools - video, audio, and text chat
+
+• Publish finished projects to public libraries
+
+🔧 API Configuration
+
+🤖 Gemini AI Setup
+
+• Obtain Google Gemini API key from Google AI Studio
+
+• Configure the key in Chrome extension settings
+
+• API key is stored locally in your browser
+
+📨 Environment Variables
+
+• Each service requires specific environment variables. Refer to individual repository README files for detailed configuration.
+
+
 
 ---
 
@@ -191,25 +380,6 @@ directcodeui/
 └─ notify-server/   # Status tracking
 ```
 
----
-
-## ☁️ Deployment
-
-### Frontend (Vercel)
-
-```bash
-cd frontend
-vercel
-```
-
-### Backend (Render / hostinger)
-
-```bash
-railway init
-railway up
-```
-
----
 
 ## 🤝 Community & Contribution
 
@@ -230,10 +400,12 @@ MIT © 2025 DirectCode UI
 
 **Yash Yadav**
 3rd Year B.Tech CSE
-Building developer tools that matter ⚡
+Passionate about building developer tools Building developer tools⚡
 
 ---
 
 ## ⭐ If you like this project, give it a star!
+![SpinningStarYellowGIF](https://github.com/user-attachments/assets/588bb26f-4db5-4b08-94ca-31dcff107608)
+
 
 ---
