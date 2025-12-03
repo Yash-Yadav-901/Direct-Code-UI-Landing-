@@ -101,7 +101,7 @@ const AboutPage = () => {
                 <p className="text-gray-400 text-lg mb-4">
                     Ready to build smarter? Join thousands of developers using DirectCode UI to accelerate their workflow and share their creativity.
                 </p>
-                <a href="/get-started" className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition">
+                <a href="https://app.directcodeui.in/" className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition">
                     Get Started
                 </a>
             </div>
